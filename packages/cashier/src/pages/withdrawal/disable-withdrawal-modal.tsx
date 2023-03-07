@@ -2,7 +2,12 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
-const DisableWithdrawalModal = ({ is_risky_client, onClick }) => (
+type TDisableWithdrawalModal = {
+    is_risky_client: boolean;
+    onClick: VoidFunction;
+};
+
+const DisableWithdrawalModal = ({ is_risky_client, onClick }: TDisableWithdrawalModal) => (
     <Modal is_open={is_risky_client} small className='center-risk-modal' title={localize('Financial Assessment')}>
         <Modal.Body>
             <Text as='p' align='center'>
