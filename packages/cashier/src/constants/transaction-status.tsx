@@ -2,8 +2,21 @@ import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
-export const getStatus = (transaction_hash, transaction_type, status_code) => {
-    const formatted_status_code = status_code.toLowerCase();
+export const getStatus = (
+    transaction_hash: string,
+    transaction_type: 'deposit' | 'withdrawal',
+    status_code:
+        | 'confirmed'
+        | 'error'
+        | 'pending'
+        | 'cancelled'
+        | 'locked'
+        | 'performing_blockchain_txn'
+        | 'processing'
+        | 'rejected'
+        | 'sent'
+        | 'verified'
+) => {
     const formatted_transaction_hash = transaction_hash
         ? `${transaction_hash.substring(0, 4)}....${transaction_hash.substring(transaction_hash.length - 4)}`
         : localize('Pending');
@@ -41,6 +54,7 @@ export const getStatus = (transaction_hash, transaction_type, status_code) => {
                 name: localize('Unsuccessful'),
                 description: (
                     <Localize
+                        key={0}
                         i18n_default_text='Your withdrawal is unsuccessful due to an error on the blockchain. Please <0>contact us</0> via live chat for more info.'
                         values={{
                             interpolation: { escapeValue: false },
@@ -93,6 +107,24 @@ export const getStatus = (transaction_hash, transaction_type, status_code) => {
             },
         },
     };
+    if (
+        transaction_type === 'deposit' &&
+        (status_code === 'confirmed' || status_code === 'error' || status_code === 'pending')
+    ) {
+        return status_list[transaction_type][status_code];
+    } else if (
+        transaction_type === 'withdrawal' &&
+        (status_code === 'cancelled' ||
+            status_code === 'error' ||
+            status_code === 'locked' ||
+            status_code === 'performing_blockchain_txn' ||
+            status_code === 'processing' ||
+            status_code === 'rejected' ||
+            status_code === 'sent' ||
+            status_code === 'verified')
+    ) {
+        return status_list[transaction_type][status_code];
+    }
 
-    return status_list[transaction_type][formatted_status_code];
+    return undefined;
 };
