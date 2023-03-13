@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStaticUrl, PlatformContext, setUrlLanguage } from '@deriv/shared';
+import { getStaticUrl, setUrlLanguage } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 
 type TStatusUrl = {
@@ -12,10 +12,9 @@ type TStatusUrl = {
 };
 
 const StaticUrl = ({ href, is_document, children, ...props }: TStatusUrl) => {
-    const { is_appstore } = React.useContext(PlatformContext);
     const getHref = () => {
         setUrlLanguage(getLanguage());
-        return getStaticUrl(href, { is_appstore }, is_document);
+        return getStaticUrl(href, is_document);
     };
 
     return (
