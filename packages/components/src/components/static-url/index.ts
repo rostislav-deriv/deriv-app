@@ -1,3 +1,3 @@
-import StaticUrl from './static-url.tsx';
+import StaticUrl from './static-url';
 
 export default StaticUrl;
