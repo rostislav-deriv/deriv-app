@@ -59,6 +59,7 @@ export default class TransactionHistoryStore {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
                 this.setCryptoTransactionsHistory(
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     crypto.map(el => ({
                         ...el,
