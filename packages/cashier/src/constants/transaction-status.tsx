@@ -9,13 +9,13 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
         : localize('Pending');
     const status_list = {
         deposit: {
-            confirmed: {
+            CONFIRMED: {
                 name: localize('Successful'),
                 description: localize('Your deposit is successful.'),
                 renderer: 'successful',
                 transaction_hash: formatted_transaction_hash,
             },
-            error: {
+            ERROR: {
                 name: localize('Unsuccessful'),
                 description: localize(
                     'Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.'
@@ -23,7 +23,7 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
                 renderer: 'unsuccessful',
                 transaction_hash: localize('NA'),
             },
-            pending: {
+            PENDING: {
                 name: localize('In process'),
                 description: localize('We’ve received your request and are waiting for more blockchain confirmations.'),
                 renderer: 'in-process',
@@ -31,13 +31,13 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
             },
         },
         withdrawal: {
-            cancelled: {
+            CANCELLED: {
                 name: localize('Cancelled'),
                 description: localize('You’ve cancelled your withdrawal request.'),
                 renderer: 'unsuccessful',
                 transaction_hash: localize('NA'),
             },
-            error: {
+            ERROR: {
                 name: localize('Unsuccessful'),
                 description: (
                     <Localize
@@ -52,7 +52,7 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
                 renderer: 'unsuccessful',
                 transaction_hash: localize('NA'),
             },
-            locked: {
+            LOCKED: {
                 name: localize('In review'),
                 description: localize(
                     "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel."
@@ -60,19 +60,19 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
                 renderer: 'in-review',
                 transaction_hash: formatted_transaction_hash,
             },
-            performing_blockchain_txn: {
+            PERFORMING_BLOCKCHAIN_TXN: {
                 name: localize('In process'),
                 description: localize('We’re sending your request to the blockchain.'),
                 renderer: 'in-process',
                 transaction_hash: formatted_transaction_hash,
             },
-            processing: {
+            PROCESSING: {
                 name: localize('In process'),
                 description: localize('We’re awaiting confirmation from the blockchain.'),
                 renderer: 'in-process',
                 transaction_hash: formatted_transaction_hash,
             },
-            rejected: {
+            REJECTED: {
                 name: localize('Unsuccessful'),
                 description: localize(
                     "Your withdrawal is unsuccessful. We've sent you an email with more information."
@@ -80,13 +80,13 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
                 renderer: 'unsuccessful',
                 transaction_hash: localize('NA'),
             },
-            sent: {
+            SENT: {
                 name: localize('Successful'),
                 description: localize('Your withdrawal is successful.'),
                 renderer: 'successful',
                 transaction_hash: formatted_transaction_hash,
             },
-            verified: {
+            VERIFIED: {
                 name: localize('In process'),
                 description: localize('We’re processing your withdrawal.'),
                 renderer: 'in-process',
@@ -98,19 +98,19 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
     let transaction_status;
     if (
         transaction_type === 'deposit' &&
-        (status_code === 'confirmed' || status_code === 'error' || status_code === 'pending')
+        (status_code === 'CONFIRMED' || status_code === 'ERROR' || status_code === 'PENDING')
     ) {
         transaction_status = status_list[transaction_type][status_code];
     } else if (
         transaction_type === 'withdrawal' &&
-        (status_code === 'cancelled' ||
-            status_code === 'error' ||
-            status_code === 'locked' ||
-            status_code === 'performing_blockchain_txn' ||
-            status_code === 'processing' ||
-            status_code === 'rejected' ||
-            status_code === 'sent' ||
-            status_code === 'verified')
+        (status_code === 'CANCELLED' ||
+            status_code === 'ERROR' ||
+            status_code === 'LOCKED' ||
+            status_code === 'PERFORMING_BLOCKCHAIN_TXN' ||
+            status_code === 'PROCESSING' ||
+            status_code === 'REJECTED' ||
+            status_code === 'SENT' ||
+            status_code === 'VERIFIED')
     ) {
         transaction_status = status_list[transaction_type][status_code];
     }

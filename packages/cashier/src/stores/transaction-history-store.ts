@@ -58,12 +58,7 @@ export default class TransactionHistoryStore {
         await this.WS.authorized.cashierPayments?.({ provider: 'crypto', transaction_type: 'all' }).then(response => {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
-                this.setCryptoTransactionsHistory(
-                    crypto.map(el => ({
-                        ...el,
-                        status_code: el.status_code.toLowerCase() as TStatusCode,
-                    }))
-                );
+                this.setCryptoTransactionsHistory(crypto);
             }
         });
     }

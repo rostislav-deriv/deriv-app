@@ -58,7 +58,7 @@ describe('<CryptoTransactionsHistory />', () => {
                 amount: 0.005,
                 id: '3',
                 is_valid_to_cancel: 1,
-                status_code: 'locked',
+                status_code: 'LOCKED',
                 status_message:
                     "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
                 submit_date: 1640603927,
@@ -82,7 +82,7 @@ describe('<CryptoTransactionsHistory />', () => {
                 amount: 0.005,
                 id: '3',
                 is_valid_to_cancel: 1,
-                status_code: 'locked',
+                status_code: 'LOCKED',
                 status_message:
                     "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
                 submit_date: 1640603927,

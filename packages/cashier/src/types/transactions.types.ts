@@ -1,15 +1,15 @@
 export type TTransactionType = 'deposit' | 'withdrawal';
 export type TStatusCode =
-    | 'confirmed'
-    | 'error'
-    | 'pending'
-    | 'cancelled'
-    | 'locked'
-    | 'performing_blockchain_txn'
-    | 'processing'
-    | 'rejected'
-    | 'sent'
-    | 'verified';
+    | 'CONFIRMED'
+    | 'ERROR'
+    | 'PENDING'
+    | 'CANCELLED'
+    | 'LOCKED'
+    | 'PERFORMING_BLOCKCHAIN_TXN'
+    | 'PROCESSING'
+    | 'REJECTED'
+    | 'SENT'
+    | 'VERIFIED';
 
 export type TTransactionItem = {
     address_hash: string;

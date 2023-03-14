@@ -24,7 +24,7 @@ describe('<RecentTransaction />', () => {
                                 amount: 0.01,
                                 id: '262',
                                 is_valid_to_cancel: 1,
-                                status_code: 'locked',
+                                status_code: 'LOCKED',
                                 status_message:
                                     "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
                                 submit_date: 1644408421,
@@ -85,7 +85,7 @@ describe('<RecentTransaction />', () => {
             {
                 ...mockRootStore.modules.cashier.transaction_history.crypto_transactions[0],
                 transaction_type: 'deposit',
-                status_code: 'pending',
+                status_code: 'PENDING',
             },
         ];
         renderRecentTransaction();
