@@ -63,11 +63,12 @@ const RecentTransaction = observer(() => {
                                 <span
                                     className={classNames(
                                         'cashier-recent-transaction__status-indicator',
-                                        `cashier-recent-transaction__status-indicator-${status!.renderer}`
+                                        `cashier-recent-transaction__status-indicator-${status.renderer}`
                                     )}
                                 />
+
                                 <Text as='p' size='xxxs'>
-                                    {status!.name}
+                                    {status.name}
                                 </Text>
                             </div>
                         </div>
@@ -98,7 +99,7 @@ const RecentTransaction = observer(() => {
                                     &nbsp;
                                 </Text>
                                 <Text as='p' size='xxxs' color='red' line_height='s'>
-                                    {status!.transaction_hash}
+                                    {status.name}
                                 </Text>
                             </div>
                         </div>
