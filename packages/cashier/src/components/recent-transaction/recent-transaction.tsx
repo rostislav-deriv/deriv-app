@@ -66,7 +66,6 @@ const RecentTransaction = observer(() => {
                                         `cashier-recent-transaction__status-indicator-${status.renderer}`
                                     )}
                                 />
-
                                 <Text as='p' size='xxxs'>
                                     {status.name}
                                 </Text>
@@ -99,7 +98,7 @@ const RecentTransaction = observer(() => {
                                     &nbsp;
                                 </Text>
                                 <Text as='p' size='xxxs' color='red' line_height='s'>
-                                    {status.name}
+                                    {status.transaction_hash}
                                 </Text>
                             </div>
                         </div>
