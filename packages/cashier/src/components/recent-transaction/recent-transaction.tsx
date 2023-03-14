@@ -21,12 +21,13 @@ const RecentTransaction = observer(() => {
     if (!crypto_transactions.length) {
         return null;
     }
-    let { address_hash } = crypto_transactions[0];
-    const { transaction_hash, transaction_type, status_code, submit_date } = crypto_transactions[0];
+    const { address_hash, transaction_hash, transaction_type, status_code, submit_date } = crypto_transactions[0];
     const status = getStatus(transaction_hash, transaction_type, status_code);
     const submit_date_moment = epochToMoment(submit_date).format('MMM D, YYYY');
     const transaction_type_display_text = transaction_type[0].toUpperCase() + transaction_type.slice(1);
-    address_hash = `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`;
+    const address_hash_display_value = `${address_hash.substring(0, 4)}....${address_hash.substring(
+        address_hash.length - 4
+    )}`;
 
     const amount = crypto_transactions[0].amount;
 
@@ -87,7 +88,7 @@ const RecentTransaction = observer(() => {
                                     &nbsp;
                                 </Text>
                                 <Text as='p' size='xxxs' color='red' line_height='s'>
-                                    {address_hash}
+                                    {address_hash_display_value}
                                 </Text>
                             </div>
 
