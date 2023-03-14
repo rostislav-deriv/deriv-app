@@ -13,7 +13,7 @@ describe('TransactionHistoryStore', () => {
             amount: 0.0005531,
             id: '175',
             is_valid_to_cancel: 1,
-            status_code: 'locked',
+            status_code: 'LOCKED',
             status_message:
                 'We`re reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won`t be able to cancel.',
             submit_date: 1648811322,
@@ -68,7 +68,7 @@ describe('TransactionHistoryStore', () => {
                 amount: 0.0005531,
                 id: '175',
                 is_valid_to_cancel: 0,
-                status_code: 'cancelled',
+                status_code: 'CANCELLED',
                 status_message: 'You’ve cancelled your withdrawal request.',
                 submit_date: 1649048412,
                 transaction_type: 'withdrawal',
@@ -80,7 +80,7 @@ describe('TransactionHistoryStore', () => {
                 amount: 0.0005531,
                 id: '176',
                 is_valid_to_cancel: 1,
-                status_code: 'locked',
+                status_code: 'LOCKED',
                 status_message:
                     'We`re reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won`t be able to cancel.',
                 submit_date: 1649048412,
