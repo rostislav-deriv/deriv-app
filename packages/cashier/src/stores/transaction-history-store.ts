@@ -1,6 +1,6 @@
 import { action, observable, makeObservable } from 'mobx';
 import { isCryptocurrency } from '@deriv/shared';
-import { TWebSocket, TRootStore, TTransactionItem } from 'Types';
+import { TWebSocket, TRootStore, TTransactionItem, TStatusCode } from 'Types';
 
 export default class TransactionHistoryStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -59,11 +59,9 @@ export default class TransactionHistoryStore {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
                 this.setCryptoTransactionsHistory(
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
                     crypto.map(el => ({
                         ...el,
-                        status_code: el.status_code.toLowerCase(),
+                        status_code: el.status_code.toLowerCase() as TStatusCode,
                     }))
                 );
             }
