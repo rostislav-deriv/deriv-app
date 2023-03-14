@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
@@ -107,11 +107,13 @@ export const getStatus = (
             },
         },
     };
+
+    let transaction_status;
     if (
         transaction_type === 'deposit' &&
         (status_code === 'confirmed' || status_code === 'error' || status_code === 'pending')
     ) {
-        return status_list[transaction_type][status_code];
+        transaction_status = status_list[transaction_type][status_code];
     } else if (
         transaction_type === 'withdrawal' &&
         (status_code === 'cancelled' ||
@@ -123,8 +125,8 @@ export const getStatus = (
             status_code === 'sent' ||
             status_code === 'verified')
     ) {
-        return status_list[transaction_type][status_code];
+        transaction_status = status_list[transaction_type][status_code];
     }
 
-    return undefined;
+    return transaction_status as { name: string; description: ReactNode; renderer: string; transaction_hash: string };
 };
