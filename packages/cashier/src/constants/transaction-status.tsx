@@ -1,22 +1,9 @@
 import React, { ReactNode } from 'react';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { TStatusCode, TTransactionType } from 'Types';
 
-export const getStatus = (
-    transaction_hash: string,
-    transaction_type: 'deposit' | 'withdrawal',
-    status_code:
-        | 'confirmed'
-        | 'error'
-        | 'pending'
-        | 'cancelled'
-        | 'locked'
-        | 'performing_blockchain_txn'
-        | 'processing'
-        | 'rejected'
-        | 'sent'
-        | 'verified'
-) => {
+export const getStatus = (transaction_hash: string, transaction_type: TTransactionType, status_code: TStatusCode) => {
     const formatted_transaction_hash = transaction_hash
         ? `${transaction_hash.substring(0, 4)}....${transaction_hash.substring(transaction_hash.length - 4)}`
         : localize('Pending');
