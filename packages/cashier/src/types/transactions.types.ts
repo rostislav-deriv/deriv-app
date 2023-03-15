@@ -1,4 +1,5 @@
 export type TTransactionType = 'deposit' | 'withdrawal';
+
 export type TStatusCode =
     | 'CONFIRMED'
     | 'ERROR'

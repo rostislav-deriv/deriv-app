@@ -95,23 +95,15 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
         },
     };
 
+    const isDeposit = (key: TStatusCode): key is keyof typeof status_list.deposit =>
+        typeof key === typeof status_list.deposit;
+    const isWithdrawal = (key: TStatusCode): key is keyof typeof status_list.withdrawal =>
+        typeof key === typeof status_list.withdrawal;
+
     let transaction_status;
-    if (
-        transaction_type === 'deposit' &&
-        (status_code === 'CONFIRMED' || status_code === 'ERROR' || status_code === 'PENDING')
-    ) {
+    if (transaction_type === 'deposit' && isDeposit(status_code)) {
         transaction_status = status_list[transaction_type][status_code];
-    } else if (
-        transaction_type === 'withdrawal' &&
-        (status_code === 'CANCELLED' ||
-            status_code === 'ERROR' ||
-            status_code === 'LOCKED' ||
-            status_code === 'PERFORMING_BLOCKCHAIN_TXN' ||
-            status_code === 'PROCESSING' ||
-            status_code === 'REJECTED' ||
-            status_code === 'SENT' ||
-            status_code === 'VERIFIED')
-    ) {
+    } else if (transaction_type === 'withdrawal' && isWithdrawal(status_code)) {
         transaction_status = status_list[transaction_type][status_code];
     }
 
