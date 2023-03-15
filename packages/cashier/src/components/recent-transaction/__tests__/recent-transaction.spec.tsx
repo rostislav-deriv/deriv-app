@@ -1,13 +1,14 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import RecentTransaction from '../recent-transaction';
-import { createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { TRootStore } from '@deriv/stores/types';
 
 describe('<RecentTransaction />', () => {
-    let history, mockRootStore: T;
+    let history: BrowserHistory, mockRootStore: TRootStore;
     beforeEach(() => {
         history = createBrowserHistory();
         mockRootStore = mockStore({
