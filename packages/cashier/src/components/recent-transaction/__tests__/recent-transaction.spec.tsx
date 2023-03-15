@@ -4,12 +4,13 @@ import RecentTransaction from '../recent-transaction';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 describe('<RecentTransaction />', () => {
-    let history, mockRootStore;
+    let history, mockRootStore: T;
     beforeEach(() => {
         history = createBrowserHistory();
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 currency: 'BTC',
             },
@@ -36,7 +37,7 @@ describe('<RecentTransaction />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const renderRecentTransaction = () => {
