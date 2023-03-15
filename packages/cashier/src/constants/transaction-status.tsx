@@ -100,12 +100,9 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
     const isWithdrawal = (key: TStatusCode): key is keyof typeof status_list.withdrawal =>
         typeof key === typeof status_list.withdrawal;
 
-    let transaction_status;
     if (transaction_type === 'deposit' && isDeposit(status_code)) {
-        transaction_status = status_list[transaction_type][status_code];
+        return transaction_status = status_list[transaction_type][status_code];
     } else if (transaction_type === 'withdrawal' && isWithdrawal(status_code)) {
-        transaction_status = status_list[transaction_type][status_code];
+        return transaction_status = status_list[transaction_type][status_code];
     }
-
-    return transaction_status as { name: string; description: ReactNode; renderer: string; transaction_hash: string };
 };
