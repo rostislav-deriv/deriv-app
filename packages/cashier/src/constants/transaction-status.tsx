@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { TStatusCode, TTransactionType } from 'Types';
@@ -100,12 +100,11 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
     const isWithdrawal = (status: TStatusCode): status is keyof typeof status_list.withdrawal =>
         Object.keys(status_list.withdrawal).includes(status);
 
-    let transaction_status;
     if (transaction_type === 'deposit' && isDeposit(status_code)) {
-        transaction_status = status_list[transaction_type][status_code];
+        return status_list[transaction_type][status_code];
     } else if (transaction_type === 'withdrawal' && isWithdrawal(status_code)) {
-        transaction_status = status_list[transaction_type][status_code];
+        return status_list[transaction_type][status_code];
     }
 
-    return transaction_status as { name: string; description: ReactNode; renderer: string; transaction_hash: string };
+    return null;
 };
