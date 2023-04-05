@@ -42,7 +42,7 @@ export const RadioButton = ({ id, className, selected_value, value, label, onCha
 };
 const CUSTOM_KEY = 'custom';
 
-type TInputDateRange = {
+export type TInputDateRange = {
     value?: string;
     label?: string;
     duration?: number;

@@ -1,27 +1,54 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name, getContractPath } from '@deriv/shared';
+import {
+    extractInfoFromShortcode,
+    isForwardStarting,
+    urlFor,
+    website_name,
+    getContractPath,
+    getSupportedContracts,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
-import { getSupportedContracts } from '_common/contract';
+import { TInputDateRange } from '../Components/Form/CompositeCalendar/composite-calendar-mobile';
 
 import { connect } from 'Stores/connect';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import PlaceholderComponent from '../Components/placeholder-component';
 import { ReportsMeta } from '../Components/reports-meta';
-import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
+import { getProfitTableColumnsTemplate, TColIndex, TColumnTemplateType } from 'Constants/data-table-constants';
+import { TRootStore } from 'Stores/index';
+// import { ScrollParams } from 'react-virtualized';
+import moment from 'moment/moment';
 
 const profit_tablews_href = urlFor('user/profit_tablews', { legacy: true });
 
-const getRowAction = row_obj =>
+type TProfitTable = {
+    component_icon: string;
+    currency: string;
+    data: Array<any>;
+    date_from: number;
+    date_to: number;
+    error: string;
+    filtered_date_range: TInputDateRange;
+    is_empty: boolean;
+    is_loading: boolean;
+    is_switching: boolean;
+    handleDateChange: (values: { [key: string]: moment.Moment }) => void;
+    handleScroll: (ev: React.UIEvent<HTMLElement>) => void;
+    has_selected_date: boolean;
+    onMount: VoidFunction;
+    onUnmount: VoidFunction;
+    totals: React.ReactNode;
+};
+
+const getRowAction = (row_obj: { [key: string]: string }) =>
     getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
-    !isForwardStarting(row_obj.shortcode, row_obj.purchase_time_unix)
-        ? getContractPath(row_obj.contract_id)
+    !isForwardStarting(row_obj.shortcode, +row_obj.purchase_time_unix)
+        ? getContractPath(+row_obj.contract_id)
         : {
               component: (
                   <Localize
@@ -59,7 +86,7 @@ const ProfitTable = ({
     onMount,
     onUnmount,
     totals,
-}) => {
+}: TProfitTable) => {
     React.useEffect(() => {
         onMount();
         return () => {
@@ -80,12 +107,11 @@ const ProfitTable = ({
     );
 
     const columns = getProfitTableColumnsTemplate(currency, data.length);
-    const columns_map = columns.reduce((map, item) => {
-        map[item.col_index] = item;
-        return map;
-    }, {});
+    const columns_map = Object.fromEntries(columns.map(({ col_index, ...props }) => [col_index, { ...props }])) as {
+        [key in TColIndex]: TColumnTemplateType;
+    };
 
-    const mobileRowRenderer = ({ row, is_footer }) => {
+    const mobileRowRenderer = ({ row, is_footer }: { row: any; is_footer?: boolean }) => {
         const duration_type = /^MULTUP|MULTDOWN/.test(row.shortcode) ? '' : row.duration_type;
         const duration_classname = duration_type ? `duration-type__${duration_type.toLowerCase()}` : '';
 
@@ -188,26 +214,7 @@ const ProfitTable = ({
     );
 };
 
-ProfitTable.propTypes = {
-    component_icon: PropTypes.string,
-    currency: PropTypes.string,
-    data: MobxPropTypes.arrayOrObservableArray,
-    date_from: PropTypes.number,
-    date_to: PropTypes.number,
-    error: PropTypes.string,
-    filtered_date_range: PropTypes.object,
-    is_empty: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    handleDateChange: PropTypes.func,
-    handleScroll: PropTypes.func,
-    has_selected_date: PropTypes.bool,
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
-    totals: PropTypes.object,
-};
-
-export default connect(({ modules, client }) => ({
+export default connect(({ modules, client }: TRootStore) => ({
     currency: client.currency,
     data: modules.profit_table.data,
     date_from: modules.profit_table.date_from,

@@ -202,7 +202,7 @@ export const getUnsupportedContracts = () => ({
     },
 });
 
-export const getSupportedContracts = is_high_low => ({
+export const getSupportedContracts = (is_high_low?: boolean) => ({
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',
@@ -261,14 +261,20 @@ export const getSupportedContracts = is_high_low => ({
     },
 });
 
-export const getContractConfig = is_high_low => ({
+export type TContractType = keyof ReturnType<typeof getSupportedContracts>;
+
+export const getContractConfig = (is_high_low: boolean) => ({
     ...getSupportedContracts(is_high_low),
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => {
-    return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+export const getContractTypeDisplay = (type: TContractType, is_high_low = false) => {
+    return getContractConfig(is_high_low)[type]
+        ? getContractConfig(is_high_low)[(type as string).toUpperCase() as TContractType].name
+        : '';
 };
 
-export const getContractTypePosition = (type, is_high_low = false) =>
-    getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].position : 'top';
+export const getContractTypePosition = (type: TContractType, is_high_low = false) =>
+    getContractConfig(is_high_low)[type]
+        ? getContractConfig(is_high_low)[(type as string).toUpperCase() as TContractType].position
+        : 'top';

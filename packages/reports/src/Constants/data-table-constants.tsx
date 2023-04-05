@@ -25,7 +25,7 @@ const map = {
     transfer: 'transfer',
 } as const;
 
-type TKeys = keyof typeof map;
+export type TKeys = keyof typeof map;
 
 const getModeFromValue = (key: TKeys) => map[key] || map.default;
 
@@ -40,10 +40,16 @@ type THeaderProps = {
     title: React.ReactNode;
 };
 
-type TColumnTemplateType = {
+export type TColIndex =
+    | ReturnType<typeof getStatementTableColumnsTemplate>[number]['col_index']
+    | ReturnType<typeof getProfitTableColumnsTemplate>[number]['col_index']
+    | ReturnType<typeof getOpenPositionsColumnsTemplate>[number]['col_index']
+    | ReturnType<typeof getMultiplierOpenPositionsColumnsTemplate>[number]['col_index'];
+
+export type TColumnTemplateType = {
     key?: string;
     title?: React.ReactNode;
-    col_index?: string;
+    col_index: TColIndex;
     renderCellContent?: (props: TCellContentProps) => React.ReactNode;
     renderHeader?: (props: THeaderProps) => React.ReactNode;
     icon?: string;
@@ -64,7 +70,7 @@ type TMultiplierOpenPositionstemplateProps = {
 };
 
 /* eslint-disable react/display-name, react/prop-types */
-export const getStatementTableColumnsTemplate = (currency: string): TColumnTemplateType[] => [
+export const getStatementTableColumnsTemplate = (currency: string) => [
     {
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
@@ -129,7 +135,7 @@ export const getStatementTableColumnsTemplate = (currency: string): TColumnTempl
         ),
     },
 ];
-export const getProfitTableColumnsTemplate = (currency: string, items_count: number): TColumnTemplateType[] => [
+export const getProfitTableColumnsTemplate = (currency: string, items_count: number) => [
     {
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
@@ -196,7 +202,7 @@ export const getProfitTableColumnsTemplate = (currency: string, items_count: num
         ),
     },
 ];
-export const getOpenPositionsColumnsTemplate = (currency: string): TColumnTemplateType[] => [
+export const getOpenPositionsColumnsTemplate = (currency: string) => [
     {
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
@@ -278,7 +284,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     onClickSell,
     getPositionById,
     server_time,
-}: TMultiplierOpenPositionstemplateProps): TColumnTemplateType[] => [
+}: TMultiplierOpenPositionstemplateProps) => [
     {
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
