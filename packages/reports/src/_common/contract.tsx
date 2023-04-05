@@ -261,7 +261,9 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
     },
 });
 
-export type TContractType = keyof ReturnType<typeof getSupportedContracts>;
+export type TContractType =
+    | keyof ReturnType<typeof getSupportedContracts>
+    | keyof ReturnType<typeof getUnsupportedContracts>;
 
 export const getContractConfig = (is_high_low: boolean) => ({
     ...getSupportedContracts(is_high_low),

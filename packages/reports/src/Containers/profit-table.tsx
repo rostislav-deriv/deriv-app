@@ -5,10 +5,9 @@ import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/compo
 import {
     extractInfoFromShortcode,
     isForwardStarting,
-    urlFor,
-    website_name,
     getContractPath,
     getSupportedContracts,
+    getUnsupportedContracts,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
@@ -23,8 +22,7 @@ import { getProfitTableColumnsTemplate, TColIndex, TColumnTemplateType } from 'C
 import { TRootStore } from 'Stores/index';
 // import { ScrollParams } from 'react-virtualized';
 import moment from 'moment/moment';
-
-const profit_tablews_href = urlFor('user/profit_tablews', { legacy: true });
+import { TContractType } from '_common/contract';
 
 type TProfitTable = {
     component_icon: string;
@@ -45,29 +43,22 @@ type TProfitTable = {
     totals: React.ReactNode;
 };
 
-const getRowAction = (row_obj: { [key: string]: string }) =>
-    getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
-    !isForwardStarting(row_obj.shortcode, +row_obj.purchase_time_unix)
+const getRowAction = (row_obj: { [key: string]: string }) => {
+    const contract_type = extractInfoFromShortcode(row_obj?.shortcode)?.category?.toString().toUpperCase();
+    return getSupportedContracts()[contract_type as TContractType] &&
+        !isForwardStarting(row_obj.shortcode, +row_obj.purchase_time_unix)
         ? getContractPath(+row_obj.contract_id)
         : {
               component: (
                   <Localize
-                      i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                      i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                       values={{
-                          website_name,
+                          trade_type_name: getUnsupportedContracts()[contract_type as TContractType].name,
                       }}
-                      components={[
-                          <a
-                              key={0}
-                              className='link link--orange'
-                              rel='noopener noreferrer'
-                              target='_blank'
-                              href={profit_tablews_href}
-                          />,
-                      ]}
                   />
               ),
           };
+};
 
 const ProfitTable = ({
     component_icon,
