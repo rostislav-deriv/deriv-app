@@ -27,7 +27,7 @@ import { TContractType } from '_common/contract';
 type TProfitTable = {
     component_icon: string;
     currency: string;
-    data: Array<any>;
+    data: Array<{ [key: string]: string }>;
     date_from: number;
     date_to: number;
     error: string;
