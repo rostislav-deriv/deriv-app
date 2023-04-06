@@ -10,7 +10,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from '../Containers/progress-slider-stream';
-
+import { TCellContentProps, THeaderProps } from '../Types';
 import { getCardLabels } from '_common/contract';
 import { getProfitOrLoss } from '../Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell';
@@ -34,40 +34,6 @@ const map = {
 export type TKeys = keyof typeof map;
 
 const getModeFromValue = (key: TKeys) => map[key] || map.default;
-
-type TCellContentProps = {
-    cell_value: TKeys;
-    passthrough: any;
-    row_obj: any;
-    is_footer: boolean;
-    is_vanilla: boolean;
-};
-
-type THeaderProps = {
-    title: React.ReactNode;
-    is_vanilla: boolean;
-};
-
-export type TColIndex =
-    | ReturnType<typeof getStatementTableColumnsTemplate>[number]['col_index']
-    | ReturnType<typeof getProfitTableColumnsTemplate>[number]['col_index']
-    | ReturnType<typeof getOpenPositionsColumnsTemplate>[number]['col_index']
-    | ReturnType<typeof getMultiplierOpenPositionsColumnsTemplate>[number]['col_index'];
-
-export type TColumnTemplateType = {
-    key?: string;
-    title?: React.ReactNode;
-    col_index: TColIndex;
-    renderCellContent?: (props: TCellContentProps) => React.ReactNode;
-    renderHeader?: (props: THeaderProps) => React.ReactNode;
-    icon?: string;
-    action_type?: string;
-    refid?: string;
-    date?: string;
-    balance?: string;
-    item?: any;
-    map?: any;
-};
 
 type TMultiplierOpenPositionstemplateProps = {
     currency: string;

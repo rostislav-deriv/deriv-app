@@ -12,17 +12,16 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
-import { TInputDateRange } from '../Components/Form/CompositeCalendar/composite-calendar-mobile';
+import { TInputDateRange, TColIndex, TColumnTemplateType, TContractType } from '../Types';
 
 import { connect } from 'Stores/connect';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import PlaceholderComponent from '../Components/placeholder-component';
 import { ReportsMeta } from '../Components/reports-meta';
-import { getProfitTableColumnsTemplate, TColIndex, TColumnTemplateType } from 'Constants/data-table-constants';
+import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
 import { TRootStore } from 'Stores/index';
 // import { ScrollParams } from 'react-virtualized';
 import moment from 'moment/moment';
-import { TContractType } from '_common/contract';
 
 type TProfitTable = {
     component_icon: string;
