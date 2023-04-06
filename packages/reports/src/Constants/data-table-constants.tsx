@@ -7,11 +7,11 @@ import {
     getTotalProfit,
     shouldShowCancellation,
     getGrowthRatePercentage,
+    getCardLabels,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from '../Containers/progress-slider-stream';
 import { TCellContentProps, THeaderProps } from '../Types';
-import { getCardLabels } from '_common/contract';
 import { getProfitOrLoss } from '../Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
