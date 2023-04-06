@@ -12,7 +12,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
-import { TInputDateRange, TColIndex, TColumnTemplateType, TContractType } from '../Types';
+import { TInputDateRange, TColIndex, TColumnTemplateType, TContractType } from 'Types';
 
 import { connect } from 'Stores/connect';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';

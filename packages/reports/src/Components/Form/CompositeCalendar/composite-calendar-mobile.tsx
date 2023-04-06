@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
-import { TInputDateRange } from '../../../Types';
+import { TInputDateRange } from 'Types';
 
 type TRadioButtonProps = {
     id: string;
