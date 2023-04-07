@@ -9,6 +9,8 @@ import {
     TransferBetweenAccountsResponse,
     PaymentAgentWithdrawResponse,
     PaymentAgentDetailsResponse,
+    TSocketEndpointNames,
+    TSocketResponse,
 } from '@deriv/api-types';
 import type { TPaymentAgentWithdrawRequest, TTransactionItem, TExtendedPaymentAgentListResponse } from 'Types';
 
@@ -103,5 +105,5 @@ export type TWebSocket = {
     tradingPlatformAccountsList: (platform: string) => {
         trading_platform_accounts: (DetailsOfEachMT5Loginid & { account_id: string })[];
     };
-    wait: (value: string) => Promise<unknown>;
+    wait: <T extends TSocketEndpointNames>(value: T) => Promise<TSocketResponse<T>>;
 };
