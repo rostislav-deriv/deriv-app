@@ -12,7 +12,13 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
-import { TInputDateRange, TColIndex, TColumnTemplateType, TContractType } from 'Types';
+import {
+    TInputDateRange,
+    TColIndex,
+    TColumnTemplateType,
+    TSupportedContractType,
+    TUnsupportedContractType,
+} from 'Types';
 
 import { connect } from 'Stores/connect';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
@@ -20,7 +26,6 @@ import PlaceholderComponent from '../Components/placeholder-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
 import { TRootStore } from 'Stores/index';
-// import { ScrollParams } from 'react-virtualized';
 import moment from 'moment/moment';
 
 type TProfitTable = {
@@ -44,7 +49,7 @@ type TProfitTable = {
 
 const getRowAction = (row_obj: { [key: string]: string }) => {
     const contract_type = extractInfoFromShortcode(row_obj?.shortcode)?.category?.toString().toUpperCase();
-    return getSupportedContracts()[contract_type as TContractType] &&
+    return getSupportedContracts()[contract_type as TSupportedContractType] &&
         !isForwardStarting(row_obj.shortcode, +row_obj.purchase_time_unix)
         ? getContractPath(+row_obj.contract_id)
         : {
@@ -52,7 +57,7 @@ const getRowAction = (row_obj: { [key: string]: string }) => {
                   <Localize
                       i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                       values={{
-                          trade_type_name: getUnsupportedContracts()[contract_type as TContractType].name,
+                          trade_type_name: getUnsupportedContracts()[contract_type as TUnsupportedContractType]?.name,
                       }}
                   />
               ),

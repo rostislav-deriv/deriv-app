@@ -99,6 +99,5 @@ export type TColumnTemplateType = {
     map?: any;
 };
 
-export type TContractType =
-    | keyof ReturnType<typeof getSupportedContracts>
-    | keyof ReturnType<typeof getUnsupportedContracts>;
+export type TSupportedContractType = keyof ReturnType<typeof getSupportedContracts>;
+export type TUnsupportedContractType = keyof ReturnType<typeof getUnsupportedContracts>;

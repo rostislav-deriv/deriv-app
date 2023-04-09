@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { getProfitOrLoss } from '../Helpers/profit-loss';
 
 type TProfitLossCell = {
     value: string;
-    children: ReactNode;
+    children: React.ReactNode;
 };
 
 const ProfitLossCell = ({ value, children }: TProfitLossCell) => {
