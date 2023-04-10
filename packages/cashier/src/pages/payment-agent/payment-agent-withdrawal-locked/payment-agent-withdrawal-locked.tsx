@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router';
 import { TServerError } from '../../../types';
 import ErrorStore from 'Stores/error-store';
 
-type PaymentAgentWithdrawalLockedItemProps = {
+type TPaymentAgentWithdrawalLockedItemProps = {
     item: {
         btn_confirm_text: string;
         content: string | JSX.Element;
@@ -18,13 +18,13 @@ type PaymentAgentWithdrawalLockedItemProps = {
     };
 };
 
-type PaymentAgentWithdrawalLockedProps = RouteComponentProps & {
+type TPaymentAgentWithdrawalLockedProps = RouteComponentProps & {
     error: TServerError & {
         onClickButton?: VoidFunction;
     };
 };
 
-const PaymentAgentWithdrawalLockedItem = ({ item }: PaymentAgentWithdrawalLockedItemProps) => {
+const PaymentAgentWithdrawalLockedItem = ({ item }: TPaymentAgentWithdrawalLockedItemProps) => {
     return (
         <div className='cashier__wrapper--align-center payment-agent-withdrawal-locked'>
             {item.title && (
@@ -48,7 +48,7 @@ const PaymentAgentWithdrawalLockedItem = ({ item }: PaymentAgentWithdrawalLocked
     );
 };
 
-const PaymentAgentWithdrawalLocked = ({ error, history }: PaymentAgentWithdrawalLockedProps) => {
+const PaymentAgentWithdrawalLocked = ({ error, history }: TPaymentAgentWithdrawalLockedProps) => {
     const items = [
         ...(error.code === 'PaymentAgentWithdrawSameMethod'
             ? [
