@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import Error from 'Components/error';
 import './payment-agent-withdrawal-locked.scss';
 import { RouteComponentProps } from 'react-router';
-import { TServerError } from 'Types';
+import { TServerError } from '../../../types';
 import ErrorStore from 'Stores/error-store';
 
 type PaymentAgentWithdrawalLockedItemProps = {
