@@ -236,12 +236,12 @@ describe('PaymentAgentStore', () => {
         expect(spySortSupportedBanks).toHaveBeenCalled();
     });
 
-    it('should filter payment agent list by selected bank, card', async () => {
+    it('should filter payment agent list by selected bank', async () => {
         await payment_agent_store.setPaymentAgentList();
         payment_agent_store.filterPaymentAgentList('card');
         expect(payment_agent_store.filtered_list).toEqual([
             {
-                currencies: 'USD',
+                currency: 'USD',
                 deposit_commission: '0',
                 email: 'pa@example.com',
                 further_information: 'further information',
@@ -250,12 +250,12 @@ describe('PaymentAgentStore', () => {
                 name: 'Payment Agent of CR90000000',
                 paymentagent_loginid: 'CR90000000',
                 phone_numbers: [{ phone_number: '+12345678' }],
-                supported_payment_methods: [{ payment_method: 'Visa' }],
+                supported_banks: [{ payment_method: 'Visa' }],
                 urls: [{ url: 'http://www.pa.com' }],
                 withdrawal_commission: '0',
             },
             {
-                currencies: 'USD',
+                currency: 'USD',
                 deposit_commission: '0',
                 email: 'pa@example.com',
                 further_information: 'further information',
@@ -264,7 +264,7 @@ describe('PaymentAgentStore', () => {
                 name: 'Payment Agent of CR90000002',
                 paymentagent_loginid: 'CR90000002',
                 phone_numbers: [{ phone_number: '+12345678' }],
-                supported_payment_methods: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
                 urls: [{ url: 'http://www.pa.com' }],
                 withdrawal_commission: '0',
             },
