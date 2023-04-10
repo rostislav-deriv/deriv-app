@@ -129,7 +129,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
                                             amount={
                                                 payment_agent_list.find(
                                                     pa => pa.value === payment_agent.paymentagent_loginid
-                                                )?.min_withdrawal || undefined
+                                                )?.min_withdrawal || ''
                                             }
                                             currency={payment_agent.currency}
                                             show_currency
@@ -139,7 +139,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
                                             amount={
                                                 payment_agent_list.find(
                                                     pa => pa.value === payment_agent.paymentagent_loginid
-                                                )?.max_withdrawal || undefined
+                                                )?.max_withdrawal || ''
                                             }
                                             currency={payment_agent.currency}
                                             show_currency
@@ -160,7 +160,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
                                         })}
                                         type='text'
                                         label={localize('Enter amount')}
-                                        error={(touched.amount && errors.amount) || undefined}
+                                        error={(touched.amount && errors.amount) || ''}
                                         required
                                         autoComplete='off'
                                         maxLength={30}
