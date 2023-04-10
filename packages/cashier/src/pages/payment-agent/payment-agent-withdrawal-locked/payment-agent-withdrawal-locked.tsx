@@ -20,7 +20,7 @@ type PaymentAgentWithdrawalLockedItemProps = {
 
 type PaymentAgentWithdrawalLockedProps = RouteComponentProps & {
     error: TServerError & {
-        onClickButton?: () => void;
+        onClickButton?: VoidFunction;
     };
 };
 
