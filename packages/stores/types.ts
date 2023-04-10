@@ -1,4 +1,11 @@
-import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
+import type {
+    Authorize,
+    DetailsOfEachMT5Loginid,
+    GetAccountStatus,
+    GetLimits,
+    GetSettings,
+    LogOutResponse,
+} from '@deriv/api-types';
 
 import type { RouteComponentProps } from 'react-router';
 
@@ -95,6 +102,7 @@ type TClientStore = {
         };
     };
     account_list: TAccountsList;
+    account_settings: GetSettings;
     account_status: GetAccountStatus;
     available_crypto_currencies: string[];
     balance?: string | number;
@@ -229,6 +237,7 @@ type TUiStore = {
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
     is_ready_to_deposit_modal_visible: boolean;
+    is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
 };
