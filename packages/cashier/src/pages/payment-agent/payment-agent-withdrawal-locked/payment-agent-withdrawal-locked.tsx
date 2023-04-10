@@ -13,7 +13,7 @@ type PaymentAgentWithdrawalLockedItemProps = {
     item: {
         btn_confirm_text: string;
         content: string | JSX.Element;
-        onConfirm: () => void;
+        onConfirm: VoidFunction;
         title?: string;
     };
 };
