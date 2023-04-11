@@ -46,8 +46,8 @@ describe('<PaymentAgentTransferForm />', () => {
                             setErrorMessage: jest.fn(),
                         },
                         transfer_limit: {
-                            min: '1',
-                            max: '100',
+                            min_withdrawal: '1',
+                            max_withdrawal: '100',
                         },
                     },
                 },
