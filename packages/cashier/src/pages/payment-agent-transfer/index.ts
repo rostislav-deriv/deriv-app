@@ -1,3 +1,3 @@
-import PaymentAgentTransfer from './payment-agent-transfer.jsx';
+import PaymentAgentTransfer from './payment-agent-transfer';
 
 export default PaymentAgentTransfer;
