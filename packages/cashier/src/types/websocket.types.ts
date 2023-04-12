@@ -7,11 +7,12 @@ import {
     GetAccountSettingsResponse,
     DetailsOfEachMT5Loginid,
     P2PAdvertInfo,
+    PaymentAgentTransferRequest,
     PaymentAgentTransferResponse,
     TransferBetweenAccountsResponse,
 } from '@deriv/api-types';
 import type { TSocketEndpointNames, TSocketResponse } from '@deriv/api/types';
-import type { TPaymentAgentTransferRequest, TTransactionItem } from 'Types';
+import type { TTransactionItem } from 'Types';
 
 export type TCashierPayments = {
     provider?: string;
@@ -61,13 +62,9 @@ type TWebSocketCall = {
     ) => Promise<CashierInformationResponse & { error: TServerError }>;
     cashierPayments?: (request?: TCashierPayments) => Promise<TSubscribeCashierPayments>;
     getAccountStatus: () => Promise<AccountStatusResponse>;
-    paymentAgentTransfer: ({
-        amount,
-        currency,
-        description,
-        transfer_to,
-        dry_run,
-    }: TPaymentAgentTransferRequest) => Promise<PaymentAgentTransferResponse>;
+    paymentAgentTransfer: (
+        request: Omit<PaymentAgentTransferRequest, 'paymentagent_transfer' | 'passthrough' | 'req_id'>
+    ) => Promise<PaymentAgentTransferResponse>;
     p2pAdvertiserInfo?: () => Promise<unknown>;
     send?: (obj: unknown) => Promise<TAuthorizedSend>;
     storage: TStorage;
