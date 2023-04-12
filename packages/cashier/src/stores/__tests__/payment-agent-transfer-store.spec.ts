@@ -2,12 +2,13 @@ import PaymentAgentTransferStore from '../payment-agent-transfer-store';
 import { routes } from '@deriv/shared';
 import { configure } from 'mobx';
 import { TStores, mockStore } from '@deriv/stores';
-import { TExtendedPaymentAgentListResponse, TWebSocket } from '../../types';
+import { PaymentAgentListResponse } from '@deriv/api-types';
+import { TWebSocket } from '../../types';
 
 configure({ safeDescriptors: false });
 
 let payment_agent_transfer_store: PaymentAgentTransferStore,
-    response_payment_agent: TExtendedPaymentAgentListResponse,
+    response_payment_agent: PaymentAgentListResponse,
     root_store: TStores,
     transfer_data: {
         transfer_to: string;

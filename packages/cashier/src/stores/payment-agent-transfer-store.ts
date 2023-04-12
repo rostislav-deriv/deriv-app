@@ -2,11 +2,10 @@ import { action, computed, observable, makeObservable } from 'mobx';
 import { routes } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
+import { PaymentAgentTransferRequest, PaymentAgentListResponse } from '@deriv/api-types';
 import {
-    TExtendedPaymentAgentListResponse,
     TPaymentAgentTransferReceipt,
     TPaymentAgentTransferConfirm,
-    TPaymentAgentTransferRequest,
     TRootStore,
     TTransferLimit,
     TWebSocket,
@@ -102,7 +101,7 @@ export default class PaymentAgentTransferStore {
         };
     }
 
-    async getCurrentPaymentAgent(response_payment_agent: TExtendedPaymentAgentListResponse) {
+    async getCurrentPaymentAgent(response_payment_agent: PaymentAgentListResponse) {
         const { client, modules } = this.root_store;
         const payment_agent_listed = response_payment_agent.paymentagent_list?.list.find(
             agent => agent.paymentagent_loginid === client.loginid
@@ -138,7 +137,7 @@ export default class PaymentAgentTransferStore {
         currency,
         description,
         transfer_to,
-    }: TPaymentAgentTransferRequest) => {
+    }: PaymentAgentTransferRequest) => {
         this.error.setErrorMessage('');
         const payment_agent_transfer = await this.WS.authorized.paymentAgentTransfer({
             amount,
@@ -152,7 +151,7 @@ export default class PaymentAgentTransferStore {
             this.setConfirmationPaymentAgentTransfer({
                 client_id: transfer_to,
                 client_name: payment_agent_transfer.client_to_full_name,
-                amount,
+                amount: amount.toString(),
                 description,
             });
             this.setIsTryTransferSuccessful(true);
@@ -168,7 +167,7 @@ export default class PaymentAgentTransferStore {
         currency,
         description,
         transfer_to,
-    }: TPaymentAgentTransferRequest) => {
+    }: PaymentAgentTransferRequest) => {
         this.error.setErrorMessage('');
         const payment_agent_transfer = await this.WS.authorized.paymentAgentTransfer({
             amount,
@@ -178,7 +177,7 @@ export default class PaymentAgentTransferStore {
         });
         if (Number(payment_agent_transfer.paymentagent_transfer) === 1) {
             this.setReceiptPaymentAgentTransfer({
-                amount_transferred: amount,
+                amount_transferred: amount.toString(),
                 client_id: transfer_to,
                 client_name: payment_agent_transfer.client_to_full_name,
             });
