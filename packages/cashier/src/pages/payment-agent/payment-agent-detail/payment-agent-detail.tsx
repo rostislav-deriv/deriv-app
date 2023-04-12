@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import './payment-agent-detail.scss';
 
 type TPaymentAgentDetail = {
     action?: string;
-    children?: ReactNode;
+    children?: React.ReactNode;
     className?: string;
     has_red_color?: boolean;
     icon?: string;
