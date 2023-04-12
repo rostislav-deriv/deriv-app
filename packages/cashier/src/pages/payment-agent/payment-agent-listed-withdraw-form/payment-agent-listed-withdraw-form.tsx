@@ -34,8 +34,8 @@ const validateWithdrawal = (
         type: 'float',
         decimals: getDecimalPlaces(currency),
         ...(payment_agent.min_withdrawal && {
-            min: +payment_agent.min_withdrawal,
-            max: payment_agent.max_withdrawal !== null ? +payment_agent.max_withdrawal : undefined,
+            min: Number(payment_agent.min_withdrawal),
+            max: payment_agent.max_withdrawal ? Number(payment_agent.max_withdrawal) : undefined,
         }),
     });
 
