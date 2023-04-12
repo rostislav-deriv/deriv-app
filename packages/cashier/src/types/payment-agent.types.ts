@@ -35,7 +35,7 @@ export type TTransferLimit = {
 };
 
 export type TPaymentAgentTransferRequest = {
-    amount: string;
+    amount: number;
     currency: string;
     description: string;
     dry_run?: number;

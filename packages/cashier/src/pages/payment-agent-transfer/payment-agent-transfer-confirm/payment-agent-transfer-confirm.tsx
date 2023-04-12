@@ -38,7 +38,7 @@ const PaymentAgentTransferConfirm = observer(() => {
             }}
             onClickConfirm={() => {
                 requestPaymentAgentTransfer({
-                    amount: amount || '',
+                    amount: Number(amount),
                     currency,
                     description: description || '',
                     transfer_to: transfer_to || '',

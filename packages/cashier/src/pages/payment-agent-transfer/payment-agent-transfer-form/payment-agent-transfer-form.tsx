@@ -79,7 +79,7 @@ const PaymentAgentTransferForm = observer(() => {
         actions: { setSubmitting: (value: boolean) => void }
     ) => {
         const payment_agent_transfer = await requestTryPaymentAgentTransfer({
-            amount: values.amount,
+            amount: Number(values.amount),
             currency,
             description: values.description.replace(/\n/g, ' '),
             transfer_to: values.loginid,

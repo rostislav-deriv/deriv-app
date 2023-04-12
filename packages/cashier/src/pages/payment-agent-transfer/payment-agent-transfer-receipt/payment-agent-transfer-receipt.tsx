@@ -32,7 +32,7 @@ const PaymentAgentTransferReceipt = observer(({ history }: TPaymentAgentTransfer
             <div className='cashier__success'>
                 <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                     <Localize i18n_default_text="You've transferred" />{' '}
-                    {formatMoney(currency, receipt.amount_transferred || '', true)} {getCurrencyDisplayCode(currency)}
+                    {formatMoney(currency, Number(receipt.amount_transferred), true)} {getCurrencyDisplayCode(currency)}
                 </Text>
                 <div className='cashier__transferred-details-wrapper'>
                     <span className='account-transfer__transfer-details-from'>
