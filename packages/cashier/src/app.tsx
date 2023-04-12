@@ -2,14 +2,14 @@ import React from 'react';
 import { setWebsocket } from '@deriv/shared';
 import { init } from 'Utils/server_time';
 import CashierProviders from './cashier-providers';
+import type { TWebSocket } from './types';
+import type { TCoreStores } from '@deriv/stores/types';
 import AppContent from './app-content';
-import { TWebSocket } from 'Types';
-import type { TRootStore } from '@deriv/stores/types';
 
 type TAppProps = {
     passthrough: {
         WS: TWebSocket;
-        root_store: TRootStore;
+        root_store: TCoreStores;
     };
 };
 
