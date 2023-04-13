@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
