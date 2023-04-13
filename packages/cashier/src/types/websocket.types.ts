@@ -85,12 +85,12 @@ type TWebSocketCall = {
     paymentAgentDetails: (passthrough?: TPassthrough, req_id?: number) => Promise<PaymentAgentDetailsResponse>;
     paymentAgentList: (residence: string, currency: string) => Promise<PaymentAgentListResponse>;
     paymentAgentWithdraw: ({
-                               loginid,
-                               currency,
-                               amount,
-                               verification_code,
-                               dry_run,
-                           }: TPaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
+        loginid,
+        currency,
+        amount,
+        verification_code,
+        dry_run,
+    }: TPaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
 };
 
 export type TWebSocket = {
