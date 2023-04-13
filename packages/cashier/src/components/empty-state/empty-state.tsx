@@ -12,10 +12,10 @@ type TAction = {
 
 export type TEmptyStateProps = {
     icon?: string;
-    title?: string | React.ReactNode;
-    description?: string | React.ReactNode;
+    title?: React.ReactNode;
+    description?: React.ReactNode;
     action?: TAction;
-} & ({ title: string | React.ReactNode } | { description: string | React.ReactNode });
+} & ({ title: React.ReactNode } | { description: React.ReactNode });
 
 const EmptyState = ({ icon, title, description, action }: TEmptyStateProps) => (
     <div className='cashier-empty-state'>

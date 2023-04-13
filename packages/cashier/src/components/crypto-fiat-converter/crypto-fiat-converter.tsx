@@ -18,7 +18,7 @@ type TInputGroupProps = React.PropsWithChildren<{
 
 type TCryptoFiatConverterProps = {
     from_currency: string;
-    hint?: string | React.ReactNode;
+    hint?: React.ReactNode;
     onChangeConverterFromAmount: (
         event: { target: { value: string } },
         from_currency: string,
