@@ -1,4 +1,3 @@
-import React from 'react';
 import merge from 'lodash.merge';
 import type { TRootStore } from '../types';
 
