@@ -1,4 +1,4 @@
-import { PaymentagentList, PaymentAgentListResponse } from '@deriv/api-types';
+import { PaymentagentList } from '@deriv/api-types';
 
 export type TAgent = {
     email?: string;
@@ -68,10 +68,20 @@ type TExtendedPaymentAgentFields = {
 
 export type TExtendedPaymentAgentList = (PaymentagentList['list'][0] & TExtendedPaymentAgentFields)[];
 
-interface TExtendedPaymentagentList extends PaymentagentList {
-    list: TExtendedPaymentAgentList;
-}
+export type TPaymentAgentTransferConfirm = {
+    amount?: string;
+    client_id?: string;
+    client_name?: string;
+    description?: string;
+};
 
-export interface TExtendedPaymentAgentListResponse extends PaymentAgentListResponse {
-    paymentagent_list?: TExtendedPaymentagentList;
-}
+export type TPaymentAgentTransferReceipt = {
+    amount_transferred?: string;
+    client_id?: string;
+    client_name?: string;
+};
+
+export type TTransferLimit = {
+    min_withdrawal?: null | string | number;
+    max_withdrawal?: null | string | number;
+};

@@ -1,5 +1,5 @@
 import { action, computed, observable, makeObservable, IObservableArray } from 'mobx';
-import { PaymentAgentDetailsResponse } from '@deriv/api-types';
+import { PaymentAgentListResponse, PaymentAgentDetailsResponse } from '@deriv/api-types';
 import { formatMoney, routes, shuffleArray } from '@deriv/shared';
 import { getNormalizedPaymentMethod } from 'Utils/utility';
 import Constants from 'Constants/constants';
@@ -13,7 +13,6 @@ import {
     TPaymentAgentWithdrawReceipt,
     TPaymentAgentWithdrawRequest,
     TExtendedPaymentAgentList,
-    TExtendedPaymentAgentListResponse,
     TSupportedBank,
     TPartialPaymentAgentList,
     TTarget,
@@ -93,7 +92,7 @@ export default class PaymentAgentStore {
     selected_bank: number | string = 0;
     supported_banks: Array<TSupportedBank> = [];
     active_tab_index = 0;
-    all_payment_agent_list: TExtendedPaymentAgentListResponse | null = null;
+    all_payment_agent_list: PaymentAgentListResponse | null = null;
     search_term = '';
     has_payment_agent_search_warning = false;
     onRemount: VoidFunction | null = null;
@@ -119,7 +118,7 @@ export default class PaymentAgentStore {
         // TODO: set residence in client-store from authorize so it's faster
         await this.WS.wait('get_settings');
         const { residence, currency } = this.root_store.client;
-        return this.WS.authorized.paymentAgentList(residence, currency) as Promise<TExtendedPaymentAgentListResponse>;
+        return this.WS.authorized.paymentAgentList(residence, currency) as Promise<PaymentAgentListResponse>;
     }
 
     async getPaymentAgentDetails(): Promise<PaymentAgentDetailsResponse['paymentagent_details']> {
@@ -402,7 +401,7 @@ export default class PaymentAgentStore {
         return this.WS.allPaymentAgentList(this.root_store.client.residence);
     }
 
-    setAllPaymentAgentList(list: TExtendedPaymentAgentListResponse) {
+    setAllPaymentAgentList(list: PaymentAgentListResponse) {
         this.all_payment_agent_list = list;
     }
 
