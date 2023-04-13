@@ -7,7 +7,7 @@ import PaymentAgentList from './payment-agent-list';
 import { useCashierStore } from '../../stores/useCashierStores';
 
 type TPaymentAgent = {
-    setSideNotes: VoidFunction;
+    setSideNotes: (notes: (JSX.Element | JSX.Element[])[] | null) => void;
 };
 
 const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {

@@ -16,7 +16,7 @@ class PromiseClass {
 
 // check if mlt or dxtrade for account text
 const getAccountText = (account: { is_dxtrade: boolean; is_mt: boolean; text: string }) => {
-    let account_text;
+    let account_text: string;
     if (account.is_dxtrade || account.is_mt) {
         account_text = account.text;
     } else {
