@@ -6,7 +6,7 @@ import CashierProviders from '../../../../cashier-providers';
 import { TStores, mockStore } from '@deriv/stores';
 
 describe('<PaymentAgentWithdrawConfirm />', () => {
-    let mockRootStore: TStores, verification_code: string;
+    let mockRootStore: TStores;
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {
@@ -113,11 +113,13 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
         fireEvent.click(transfer_now_btn);
 
         const { loginid, currency, amount } = mockRootStore.modules.cashier.payment_agent.confirm;
+        const verification_code = mockRootStore.client.verification_code.payment_agent_withdraw;
 
         expect(mockRootStore.modules.cashier.payment_agent.requestPaymentAgentWithdraw).toHaveBeenCalledWith({
             loginid,
             currency,
             amount,
+            verification_code,
         });
     });
 });
