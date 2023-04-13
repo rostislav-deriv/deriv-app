@@ -24,7 +24,6 @@ type TValidateWithdrawalProps = {
 };
 
 type TPaymentAgentUnlistedWithdrawForm = {
-    verification_code: string;
     setIsUnlistedWithdraw: (value: boolean) => void;
 };
 
@@ -52,138 +51,133 @@ const validateWithdrawal = (values: TValidateWithdrawalValueProps, { balance, cu
     return errors;
 };
 
-const PaymentAgentUnlistedWithdrawForm = observer(
-    ({ verification_code, setIsUnlistedWithdraw }: TPaymentAgentUnlistedWithdrawForm) => {
-        const { client } = useStore();
-        const { balance, currency } = client;
-        const { payment_agent } = useCashierStore();
-        const { error, onMountPaymentAgentWithdraw: onMount, requestTryPaymentAgentWithdraw } = payment_agent;
+const PaymentAgentUnlistedWithdrawForm = observer(({ setIsUnlistedWithdraw }: TPaymentAgentUnlistedWithdrawForm) => {
+    const { client } = useStore();
+    const { balance, currency } = client;
+    const verification_code = client.verification_code.payment_agent_withdraw;
+    const { payment_agent } = useCashierStore();
+    const { error, onMountPaymentAgentWithdraw: onMount, requestTryPaymentAgentWithdraw } = payment_agent;
 
-        React.useEffect(() => {
-            onMount();
-        }, [onMount]);
+    React.useEffect(() => {
+        onMount();
+    }, [onMount]);
 
-        const validateWithdrawalPassthrough = (values: TValidateWithdrawalValueProps) =>
-            validateWithdrawal(values, { balance, currency });
+    const validateWithdrawalPassthrough = (values: TValidateWithdrawalValueProps) =>
+        validateWithdrawal(values, { balance, currency });
 
-        const onWithdrawalPassthrough = async (
-            values: TValidateWithdrawalValueProps,
-            actions: { setSubmitting: (value: boolean) => void }
-        ) => {
-            const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
-                loginid: values.account_number,
-                currency,
-                amount: values.amount,
-                verification_code,
-            });
-            if ((payment_agent_withdraw as unknown as { error: unknown })?.error) {
-                actions.setSubmitting(false);
-            }
-        };
+    const onWithdrawalPassthrough = async (
+        values: TValidateWithdrawalValueProps,
+        actions: { setSubmitting: (value: boolean) => void }
+    ) => {
+        const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
+            loginid: values.account_number,
+            currency,
+            amount: values.amount,
+            verification_code,
+        });
+        if ((payment_agent_withdraw as unknown as { error: unknown })?.error) {
+            actions.setSubmitting(false);
+        }
+    };
 
-        return (
-            <div className='payment-agent-withdraw-form'>
-                <div className='payment-agent-withdraw-form__page-return'>
-                    <Icon
-                        data_testid={'dt-back-arrow-icon'}
-                        icon='icArrowLeftBold'
-                        onClick={() => setIsUnlistedWithdraw(false)}
-                    />
-                    <Text as='p' line_height='m' size='xs' weight='bold'>
-                        <Localize i18n_default_text='Back to list' />
-                    </Text>
-                </div>
-                <SideNote className='payment-agent-list__side-note' has_title={false} is_mobile>
-                    <PaymentAgentDisclaimer />
-                </SideNote>
-                <Formik
-                    initialValues={{
-                        account_number: '',
-                        amount: '',
-                    }}
-                    validate={validateWithdrawalPassthrough}
-                    onSubmit={onWithdrawalPassthrough}
-                >
-                    {({ errors, isSubmitting, isValid, touched, values, setFieldValue }) => {
-                        return (
-                            <Form className='payment-agent-withdraw-form__form'>
-                                <Field name='account_number'>
+    return (
+        <div className='payment-agent-withdraw-form'>
+            <div className='payment-agent-withdraw-form__page-return'>
+                <Icon
+                    data_testid={'dt-back-arrow-icon'}
+                    icon='icArrowLeftBold'
+                    onClick={() => setIsUnlistedWithdraw(false)}
+                />
+                <Text as='p' line_height='m' size='xs' weight='bold'>
+                    <Localize i18n_default_text='Back to list' />
+                </Text>
+            </div>
+            <SideNote className='payment-agent-list__side-note' has_title={false} is_mobile>
+                <PaymentAgentDisclaimer />
+            </SideNote>
+            <Formik
+                initialValues={{
+                    account_number: '',
+                    amount: '',
+                }}
+                validate={validateWithdrawalPassthrough}
+                onSubmit={onWithdrawalPassthrough}
+            >
+                {({ errors, isSubmitting, isValid, touched, values, setFieldValue }) => {
+                    return (
+                        <Form className='payment-agent-withdraw-form__form'>
+                            <Field name='account_number'>
+                                {({ field }: FieldProps) => (
+                                    <Input
+                                        {...field}
+                                        type='text'
+                                        className='payment-agent-withdraw-form__form-account-number'
+                                        label={localize('Enter the payment agent account number')}
+                                        error={(touched.account_number && errors.account_number) || undefined}
+                                        hint={localize('Example: CR123456789')}
+                                        required
+                                        autoComplete='off'
+                                        maxLength={30}
+                                        trailing_icon={
+                                            errors.account_number ===
+                                            localize('Please enter a valid account number. Example: CR123456789') ? (
+                                                <Icon
+                                                    icon='IcCloseCircleRed'
+                                                    onClick={() => {
+                                                        setFieldValue('account_number', '');
+                                                    }}
+                                                />
+                                            ) : null
+                                        }
+                                    />
+                                )}
+                            </Field>
+                            <div className='payment-agent-withdraw-form__form-amount'>
+                                <Field name='amount'>
                                     {({ field }: FieldProps) => (
                                         <Input
                                             {...field}
                                             type='text'
-                                            className='payment-agent-withdraw-form__form-account-number'
-                                            label={localize('Enter the payment agent account number')}
-                                            error={(touched.account_number && errors.account_number) || undefined}
-                                            hint={localize('Example: CR123456789')}
+                                            label={localize('Enter amount')}
+                                            error={(touched.amount && errors.amount) || undefined}
                                             required
                                             autoComplete='off'
                                             maxLength={30}
                                             trailing_icon={
-                                                errors.account_number ===
-                                                localize(
-                                                    'Please enter a valid account number. Example: CR123456789'
-                                                ) ? (
-                                                    <Icon
-                                                        icon='IcCloseCircleRed'
-                                                        onClick={() => {
-                                                            setFieldValue('account_number', '');
-                                                        }}
-                                                    />
-                                                ) : null
+                                                <span
+                                                    className={classNames(
+                                                        'symbols',
+                                                        `symbols--${currency.toLowerCase()}`
+                                                    )}
+                                                >
+                                                    {getCurrencyDisplayCode(currency)}
+                                                </span>
                                             }
                                         />
                                     )}
                                 </Field>
-                                <div className='payment-agent-withdraw-form__form-amount'>
-                                    <Field name='amount'>
-                                        {({ field }: FieldProps) => (
-                                            <Input
-                                                {...field}
-                                                type='text'
-                                                label={localize('Enter amount')}
-                                                error={(touched.amount && errors.amount) || undefined}
-                                                required
-                                                autoComplete='off'
-                                                maxLength={30}
-                                                trailing_icon={
-                                                    <span
-                                                        className={classNames(
-                                                            'symbols',
-                                                            `symbols--${currency.toLowerCase()}`
-                                                        )}
-                                                    >
-                                                        {getCurrencyDisplayCode(currency)}
-                                                    </span>
-                                                }
-                                            />
-                                        )}
-                                    </Field>
-                                    <Button
-                                        type='submit'
-                                        is_disabled={
-                                            !isValid || isSubmitting || !values.account_number || !values.amount
-                                        }
-                                        primary
-                                        large
-                                    >
-                                        <Localize i18n_default_text='Continue' />
-                                    </Button>
-                                </div>
-                            </Form>
-                        );
-                    }}
-                </Formik>
-                <Text as='p' color='less-prominent' line_height='s' size='xxs'>
-                    <Localize
-                        i18n_default_text='Note: {{website_name}} does not charge any transfer fees.'
-                        values={{ website_name }}
-                    />
-                </Text>
-                <ErrorDialog error={error} className='payment-agent-list__error-dialog' />
-            </div>
-        );
-    }
-);
+                                <Button
+                                    type='submit'
+                                    is_disabled={!isValid || isSubmitting || !values.account_number || !values.amount}
+                                    primary
+                                    large
+                                >
+                                    <Localize i18n_default_text='Continue' />
+                                </Button>
+                            </div>
+                        </Form>
+                    );
+                }}
+            </Formik>
+            <Text as='p' color='less-prominent' line_height='s' size='xxs'>
+                <Localize
+                    i18n_default_text='Note: {{website_name}} does not charge any transfer fees.'
+                    values={{ website_name }}
+                />
+            </Text>
+            <ErrorDialog error={error} className='payment-agent-list__error-dialog' />
+        </div>
+    );
+});
 
 export default PaymentAgentUnlistedWithdrawForm;

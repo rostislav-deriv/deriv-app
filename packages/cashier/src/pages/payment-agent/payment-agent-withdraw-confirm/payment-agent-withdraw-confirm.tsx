@@ -5,14 +5,11 @@ import { localize } from '@deriv/translations';
 import TransferConfirm from 'Components/transfer-confirm';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
-type TPaymentAgentWithdrawConfirm = {
-    verification_code: string;
-};
-
-const PaymentAgentWithdrawConfirm = observer(({ verification_code }: TPaymentAgentWithdrawConfirm) => {
+const PaymentAgentWithdrawConfirm = observer(() => {
     const { client } = useStore();
     const { loginid: client_loginid } = client;
     const { payment_agent } = useCashierStore();
+    const verification_code = client.verification_code.payment_agent_withdraw;
     const {
         confirm: { amount, currency, loginid, payment_agent_name },
         error,

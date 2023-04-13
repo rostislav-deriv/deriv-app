@@ -15,7 +15,6 @@ import './payment-agent-container.scss';
 
 type TPaymentAgentContainer = {
     is_deposit?: boolean;
-    verification_code: string;
 };
 
 const PaymentAgentSearchWarning = () => {
@@ -32,7 +31,7 @@ const PaymentAgentSearchWarning = () => {
     );
 };
 
-const PaymentAgentContainer = observer(({ is_deposit, verification_code }: TPaymentAgentContainer) => {
+const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) => {
     const { ui } = useStore();
     const { app_contents_scroll_ref, is_dark_mode_on } = ui;
     const { payment_agent: payment_agent_store } = useCashierStore();
@@ -75,7 +74,7 @@ const PaymentAgentContainer = observer(({ is_deposit, verification_code }: TPaym
     ];
 
     if (is_try_withdraw_successful) {
-        return <PaymentAgentWithdrawConfirm verification_code={verification_code} />;
+        return <PaymentAgentWithdrawConfirm />;
     }
 
     if (is_withdraw_successful) {
@@ -83,12 +82,7 @@ const PaymentAgentContainer = observer(({ is_deposit, verification_code }: TPaym
     }
 
     if (is_unlisted_withdraw) {
-        return (
-            <PaymentAgentUnlistedWithdrawForm
-                verification_code={verification_code}
-                setIsUnlistedWithdraw={setIsUnlistedWithdraw}
-            />
-        );
+        return <PaymentAgentUnlistedWithdrawForm setIsUnlistedWithdraw={setIsUnlistedWithdraw} />;
     }
 
     return (
