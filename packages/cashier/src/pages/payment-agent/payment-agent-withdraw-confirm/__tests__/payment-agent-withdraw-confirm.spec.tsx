@@ -118,7 +118,6 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
             loginid,
             currency,
             amount,
-            verification_code,
         });
     });
 });
