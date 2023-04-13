@@ -33,6 +33,9 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
             client: {
                 balance: '1000',
                 currency: 'USD',
+                verification_code: {
+                    payment_agent_withdraw: 'ABCdef',
+                },
             },
             modules: {
                 cashier: {
@@ -51,10 +54,7 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     const renderPaymentAgentUnlistedWithdrawForm = (is_rerender = false) => {
         const ui = (
             <CashierProviders store={mockRootStore}>
-                <PaymentAgentUnlistedWithdrawForm
-                    verification_code='ABCdef'
-                    setIsUnlistedWithdraw={setIsUnlistedWithdraw}
-                />
+                <PaymentAgentUnlistedWithdrawForm setIsUnlistedWithdraw={setIsUnlistedWithdraw} />
             </CashierProviders>
         );
         return is_rerender ? ui : render(ui);

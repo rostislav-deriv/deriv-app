@@ -21,7 +21,12 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
     beforeEach(() => {
         mockRootStore = mockStore({
             ui: { disableApp: jest.fn(), enableApp: jest.fn() },
-            client: { loginid: 'CR90000100' },
+            client: {
+                loginid: 'CR90000100',
+                verification_code: {
+                    payment_agent_withdraw: 'ABCdef',
+                },
+            },
             modules: {
                 cashier: {
                     payment_agent: {
@@ -38,14 +43,12 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
                 },
             },
         });
-
-        verification_code = 'ABCdef';
     });
 
     const renderPaymentAgentWithdrawConfirm = () => {
         return render(
             <CashierProviders store={mockRootStore}>
-                <PaymentAgentWithdrawConfirm verification_code={verification_code} />
+                <PaymentAgentWithdrawConfirm />
             </CashierProviders>
         );
     };

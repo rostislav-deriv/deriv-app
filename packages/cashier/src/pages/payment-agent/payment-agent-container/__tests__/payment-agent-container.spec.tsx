@@ -29,6 +29,11 @@ describe('<PaymentAgentContainer />', () => {
     let mockRootStore: TStores;
     beforeEach(() => {
         mockRootStore = mockStore({
+            client: {
+                verification_code: {
+                    payment_agent_withdraw: 'ABCdef',
+                },
+            },
             modules: {
                 cashier: {
                     payment_agent: {
@@ -82,7 +87,7 @@ describe('<PaymentAgentContainer />', () => {
     const renderPaymentAgentContainer = (is_deposit = true) => {
         return render(
             <CashierProviders store={mockRootStore}>
-                <PaymentAgentContainer is_deposit={is_deposit} verification_code='ABCdef' />
+                <PaymentAgentContainer is_deposit={is_deposit} />
             </CashierProviders>
         );
     };
