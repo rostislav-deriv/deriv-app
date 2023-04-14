@@ -37,7 +37,12 @@ const PaymentAgentWithdrawConfirm = observer(() => {
                 setIsTryWithdrawSuccessful(false);
             }}
             onClickConfirm={() => {
-                requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code });
+                requestPaymentAgentWithdraw({
+                    loginid,
+                    currency,
+                    amount,
+                    verification_code: verification_code.payment_agent_withdraw,
+                });
             }}
         />
     );
