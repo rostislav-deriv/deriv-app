@@ -4,12 +4,19 @@ import {
     CashierInformationRequest,
     CashierInformationResponse,
     CryptoConfig,
+    GetAccountSettingsResponse,
     DetailsOfEachMT5Loginid,
     P2PAdvertInfo,
+    PaymentAgentTransferRequest,
+    PaymentAgentTransferResponse,
     TransferBetweenAccountsResponse,
+    PaymentAgentWithdrawResponse,
+    PaymentAgentDetailsResponse,
+    PaymentAgentListResponse,
+    TSocketEndpointNames,
+    TSocketResponse,
 } from '@deriv/api-types';
-import type { TSocketEndpointNames, TSocketResponse } from '@deriv/api/types';
-import type { TTransactionItem } from 'Types';
+import type { TPaymentAgentWithdrawRequest, TTransactionItem } from 'Types';
 
 export type TCashierPayments = {
     provider?: string;
@@ -31,6 +38,14 @@ export type TServerError = {
     message: string;
     details?: { [key: string]: string };
     fields?: string[];
+};
+
+type TPassthrough = {
+    [k: string]: unknown;
+};
+
+type TStorage = {
+    getSettings: () => Promise<GetAccountSettingsResponse>;
 };
 
 type TServiceTokenRequest = {
@@ -55,17 +70,31 @@ type TWebSocketCall = {
     ) => Promise<CashierInformationResponse & { error: TServerError }>;
     cashierPayments?: (request?: TCashierPayments) => Promise<TSubscribeCashierPayments>;
     getAccountStatus: () => Promise<AccountStatusResponse>;
+    paymentAgentTransfer: (
+        request: Omit<PaymentAgentTransferRequest, 'paymentagent_transfer' | 'passthrough' | 'req_id'>
+    ) => Promise<PaymentAgentTransferResponse>;
     p2pAdvertiserInfo?: () => Promise<unknown>;
     send?: (obj: unknown) => Promise<TAuthorizedSend>;
+    storage: TStorage;
     transferBetweenAccounts: (
         account_from?: string,
         account_to?: string,
         currency?: string,
         amount?: number
     ) => Promise<TransferBetweenAccountsResponse & { error: TServerError }>;
+    paymentAgentDetails: (passthrough?: TPassthrough, req_id?: number) => Promise<PaymentAgentDetailsResponse>;
+    paymentAgentList: (residence: string, currency: string) => Promise<PaymentAgentListResponse>;
+    paymentAgentWithdraw: ({
+        loginid,
+        currency,
+        amount,
+        verification_code,
+        dry_run,
+    }: TPaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
 };
 
 export type TWebSocket = {
+    allPaymentAgentList: (residence: string) => Promise<PaymentAgentListResponse>;
     authorized: TWebSocketCall;
     balanceAll: () => Promise<Balance>;
     cancelCryptoTransaction?: (transaction_id: string) => Promise<{ error: TServerError }>;
