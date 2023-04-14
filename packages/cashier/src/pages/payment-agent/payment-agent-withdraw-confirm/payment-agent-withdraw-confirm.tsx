@@ -7,9 +7,8 @@ import { useCashierStore } from '../../../stores/useCashierStores';
 
 const PaymentAgentWithdrawConfirm = observer(() => {
     const { client } = useStore();
-    const { loginid: client_loginid } = client;
+    const { loginid: client_loginid, verification_code } = client;
     const { payment_agent } = useCashierStore();
-    const verification_code = client.verification_code.payment_agent_withdraw;
     const {
         confirm: { amount, currency, loginid, payment_agent_name },
         error,
