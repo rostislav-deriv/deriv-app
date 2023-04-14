@@ -16,13 +16,11 @@ type TPaymentAgentCard = {
 const PaymentAgentCard = ({ is_dark_mode_on = false, is_deposit = false, payment_agent }: TPaymentAgentCard) => {
     const message = {
         header: <PaymentAgentCardDescription is_dark_mode_on={is_dark_mode_on} payment_agent={payment_agent} />,
-        content: [
-            is_deposit ? (
-                <PaymentAgentDepositDetails payment_agent={payment_agent} />
-            ) : (
-                <PaymentAgentListedWithdrawForm payment_agent={payment_agent} />
-            ),
-        ],
+        content: is_deposit ? (
+            <PaymentAgentDepositDetails payment_agent={payment_agent} />
+        ) : (
+            <PaymentAgentListedWithdrawForm payment_agent={payment_agent} />
+        ),
     };
     return (
         <div
