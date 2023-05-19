@@ -15,12 +15,12 @@ const unFormatLocaleStringifyNumber = (input: string, locale: Intl.LocalesArgume
     return input;
 };
 
-type TOprions = {
+type TOptions = {
     fraction_digits?: number;
     locale?: Intl.LocalesArgument;
 };
 
-const useInputATMFormatter = (initial?: number, options?: TOprions) => {
+const useInputATMFormatter = (initial?: number, options?: TOptions) => {
     const { value, onChangeHandler: onChangeDecimalHandler } = useInputDecimalFormatter(undefined, options);
     const { locale, fraction_digits = 2 } = options || {};
 
