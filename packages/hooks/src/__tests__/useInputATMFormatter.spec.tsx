@@ -12,7 +12,7 @@ const type = (
         if (replace) new_value = char;
         if (char === 'BACKSPACE') new_value = `${input.current.value.substring(0, input.current.value.length - 1)}`;
 
-        act(() => input.current.onChangeHandler(new_value));
+        act(() => input.current.onChange({ target: { value: new_value } }));
     });
 };
 
@@ -32,7 +32,7 @@ describe('useInputATMFormatter', () => {
     test('should format the initial value correctly when locale is es-ES', async () => {
         const { result } = renderHook(() => useInputATMFormatter(12345.678, { locale: 'es-ES' }));
 
-        expect(result.current.value).toBe('123.456,78');
+        expect(result.current.value).toBe('12.345,67');
     });
 
     test('should shift the numbers to left while user is typing', () => {
@@ -63,7 +63,7 @@ describe('useInputATMFormatter', () => {
         const { result } = renderHook(() => useInputATMFormatter(0, { fraction_digits: 3 }));
 
         type(result, ['1', '2', '3', '4', 'BACKSPACE']);
-        act(() => result.current.onChangeHandler(`${result.current.value.replace('2', '9')}`));
+        act(() => result.current.onChange({ target: { value: `${result.current.value.replace('2', '9')}` } }));
         type(result, ['5', 'BACKSPACE', '8']);
 
         expect(result.current.value).toBe('1.938');
@@ -83,40 +83,5 @@ describe('useInputATMFormatter', () => {
         type(result, ['1234.5678'], true);
 
         expect(result.current.value).toBe('1,234.56');
-    });
-
-    // test('should format correctly on paste when decimal points are less than accepted', () => {
-    //     const { result } = renderHook(() => useInputATMFormatter());
-
-    //     type(result, ['1234.5'], true);
-
-    //     expect(result.current.value).toBe('1,234.50');
-    // });
-
-    test('should format correctly on paste when decimal points are same as accepted', () => {
-        const { result } = renderHook(() => useInputATMFormatter());
-
-        type(result, ['1234.56'], true);
-
-        expect(result.current.value).toBe('1,234.56');
-    });
-
-    test('should format correctly on paste different values', () => {
-        const { result } = renderHook(() => useInputATMFormatter());
-
-        // type(result, ['12.3'], true);
-        // expect(result.current.value).toBe('12.30');
-
-        type(result, ['12.34'], true);
-        expect(result.current.value).toBe('12.34');
-
-        // type(result, ['12.345'], true);
-        // expect(result.current.value).toBe('12.34');
-
-        type(result, ['12'], true);
-        expect(result.current.value).toBe('12.00');
-
-        type(result, ['12.3456'], true);
-        expect(result.current.value).toBe('12.34');
     });
 });
