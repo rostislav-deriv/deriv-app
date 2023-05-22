@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useInputDecimalFormatter from './useInputDecimalFormatter';
 
 const unFormatLocaleStringifyNumber = (input: string, locale: Intl.LocalesArgument) => {
@@ -17,23 +17,41 @@ const unFormatLocaleStringifyNumber = (input: string, locale: Intl.LocalesArgume
     return input;
 };
 
-type TOprions = {
+type TOptions = {
     fraction_digits?: number;
     locale?: Intl.LocalesArgument;
 };
 
-const useInputATMFormatter = (initial?: number, options?: TOprions) => {
+const useInputATMFormatter = (initial?: number, options?: TOptions) => {
     const is_pasting = useRef(false);
     const { value, onChange: onChangeDecimal } = useInputDecimalFormatter(undefined, options);
     const { locale, fraction_digits = 2 } = options || {};
+    const [caret_right_offset, setCaretRightOffset] = useState(0);
+    const [selection, setSelection] = useState<{
+        selectionStart: number;
+        selectionEnd: number;
+    }>({ selectionStart: 0, selectionEnd: 0 });
+    const [target, setTarget] = useState<Partial<React.ChangeEvent<HTMLInputElement>['target']>>();
 
     const formatted_value = useMemo(
         () => `${Number(value).toLocaleString(locale, { minimumFractionDigits: fraction_digits })}`,
         [fraction_digits, locale, value]
     );
 
+    useEffect(() => {
+        // update caret position every time the value changes (this happens after onChange)
+        const updated_caret_position = value.length - caret_right_offset;
+        if (target?.setSelectionRange) target.setSelectionRange?.(updated_caret_position, updated_caret_position);
+        setSelection({ selectionStart: updated_caret_position, selectionEnd: updated_caret_position });
+    }, [value, target]);
+
     const onChange = useCallback(
-        (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
+        (
+            e: Partial<Omit<React.ChangeEvent<HTMLInputElement>, 'target'>> & {
+                target: Partial<React.ChangeEvent<HTMLInputElement>['target']>;
+            }
+        ) => {
+            if (e.target) setTarget(e.target);
             const new_value = e?.target?.value || '';
             const unformatted = unFormatLocaleStringifyNumber(new_value, locale);
             // @ts-expect-error shouldn't cast to number because we will lose the trailing zeros.
@@ -89,6 +107,17 @@ const useInputATMFormatter = (initial?: number, options?: TOprions) => {
         []
     );
 
+    const onAction: React.KeyboardEventHandler<HTMLInputElement> & React.MouseEventHandler<HTMLInputElement> =
+        useCallback(e => {
+            if (e.currentTarget.selectionStart !== null && e.currentTarget.selectionEnd !== null) {
+                setCaretRightOffset(e.currentTarget.value.length - e.currentTarget.selectionEnd);
+                setSelection({
+                    selectionStart: e.currentTarget.selectionStart,
+                    selectionEnd: e.currentTarget.selectionEnd,
+                });
+            }
+        }, []);
+
     useEffect(() => {
         if (initial) {
             is_pasting.current = true;
@@ -100,7 +129,14 @@ const useInputATMFormatter = (initial?: number, options?: TOprions) => {
         }
     }, [fraction_digits, initial, locale, onChange]);
 
-    return { value: formatted_value, onChange, onPaste };
+    return {
+        value: formatted_value,
+        onChange,
+        onPaste,
+        onKeyDown: onAction,
+        onMouseUp: onAction,
+        onMouseDown: onAction,
+    };
 };
 
 export default useInputATMFormatter;
