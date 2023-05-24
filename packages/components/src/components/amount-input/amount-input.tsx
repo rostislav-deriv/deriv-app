@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { isMobile } from '@deriv/shared';
 import Input from '../input';
 import Text from '../text';
-import { useInputATMFormatter } from '@deriv/hooks';
+// import { useInputATMFormatter } from '@deriv/hooks';
 
 type TAmountInput = {
     currency: string;
@@ -25,14 +25,14 @@ const AmountInput = ({
     max_digits = 8,
     onChange,
 }: TAmountInput) => {
-    const formatter = useInputATMFormatter(initial_value, { fraction_digits: decimal_places, locale });
+    // const formatter = useInputATMFormatter(initial_value, { fraction_digits: decimal_places, locale });
     const [focus, setFocus] = useState(false);
 
     const onChangeHandler: React.ComponentProps<typeof Input>['onChange'] = e => {
-        formatter.onChange(e as React.ChangeEvent<HTMLInputElement>);
+        // formatter.onChange(e as React.ChangeEvent<HTMLInputElement>);
     };
 
-    useEffect(() => onChange?.(formatter.value), [formatter.value]);
+    // useEffect(() => onChange?.(formatter.value), [formatter.value]);
 
     return (
         <div className='amount-input-wrapper'>
@@ -43,7 +43,7 @@ const AmountInput = ({
                     disabled={disabled || focus}
                     type='text'
                     inputMode='numeric'
-                    value={`${formatter.value} ${currency}`}
+                    value={`${42 /* formatter.value */} ${currency}`}
                 />
                 <Input
                     className='amount-input'
@@ -53,7 +53,9 @@ const AmountInput = ({
                     disabled={disabled}
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
-                    {...formatter}
+                    {
+                        ...{} /*...formatter*/
+                    }
                     onChange={onChangeHandler}
                 />
             </div>
