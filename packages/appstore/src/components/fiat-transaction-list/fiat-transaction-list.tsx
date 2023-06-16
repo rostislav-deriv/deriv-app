@@ -12,7 +12,7 @@ import './fiat-transaction-list.scss';
 
 const FiatTransactionList = () => {
     const {
-        client: { accounts, currency: wallet_currency, loginid, landing_company_shortcode: shortcode },
+        client: { accounts, currency: wallet_currency, is_crypto, loginid, landing_company_shortcode: shortcode },
         traders_hub: { is_demo },
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
@@ -277,7 +277,7 @@ const FiatTransactionList = () => {
                         let account_title = wallet_title;
                         let account_currency = wallet_currency;
                         let icon = wallet_icon;
-                        let icon_type = 'fiat';
+                        let icon_type = is_crypto(wallet_currency) ? 'crypto' : 'fiat';
                         let is_deriv_apps = false;
                         if (transaction.action_type === 'transfer') {
                             const other_loginid =
