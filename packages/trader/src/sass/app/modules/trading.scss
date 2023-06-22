@@ -46,6 +46,12 @@
 
 /** @define modal-dialog; weak */
 .dc-mobile-dialog {
+    &__contracts-modal-list {
+        /* postcss-bem-linter: ignore */
+        .category-wrapper {
+            background-color: var(--general-main-1) !important;
+        }
+    }
     .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
         background: initial;
     }

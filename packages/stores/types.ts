@@ -394,6 +394,7 @@ type TNotificationStore = {
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
+    showSuccessWalletsUpgradeNotification: () => void;
 };
 
 type TTradersHubStore = {

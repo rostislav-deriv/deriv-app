@@ -539,7 +539,7 @@ const StaticDashboard = ({
                                                 : 'prominent'
                                         }
                                     >
-                                        {localize('Other CFD Platforms')}
+                                        {localize('Other CFDs')}
                                     </Text>
                                 </div>
                             </React.Fragment>

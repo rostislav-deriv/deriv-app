@@ -56,7 +56,6 @@ jest.mock('@deriv/components', () => ({
 
 export const mocked_props = {
     active_tab: '3',
-    is_tour_dialog_visible: true,
     dialog_options: {
         title: 'string',
         message: 'string',

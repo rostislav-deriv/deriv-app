@@ -1,3 +1,3 @@
-import { POORejected } from './rejected.jsx';
+import { POORejetced } from './rejected.jsx';
 
-export default POORejected;
+export default POORejetced;

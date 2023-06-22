@@ -29,18 +29,14 @@ Blockly.Blocks.multiplier_stop_loss = {
             colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize(
-                'Your contract is closed automatically when your loss is more than or equals to this amount. This block can only be used with the multipliers trade type.'
-            ),
+            tooltip: localize('Your contract will be closed automatically if your loss reaches this amount.'),
             category: Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
         return {
             display_name: localize('Stop loss'),
-            description: localize(
-                'Your contract is closed automatically when your loss is more than or equals to this amount. This block can only be used with the multipliers trade type.'
-            ),
+            description: localize('Your contract will be closed automatically if your loss reaches this amount.'),
         };
     },
     onchange(event) {

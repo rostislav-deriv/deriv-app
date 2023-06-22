@@ -213,7 +213,7 @@ const CFDsListing = () => {
             {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>
                     <Text line_height='m' weight='bold' color='prominent'>
-                        {localize('Other CFD Platforms')}
+                        {localize('Other CFDs')}
                     </Text>
                 </div>
             )}
