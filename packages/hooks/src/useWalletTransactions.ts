@@ -1,23 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '@deriv/stores';
-import { getWalletCurrencyIcon } from '@deriv/utils';
+import { getTradingAccountName, getWalletCurrencyIcon } from '@deriv/utils';
 import { useFetch } from '@deriv/api';
 import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
 import useWalletsList from './useWalletsList';
 import useActiveWallet from './useActiveWallet';
-
-const trading_accounts_display_prefixes = {
-    standard: 'Deriv Apps',
-    mt5: 'MT5',
-    dxtrade: 'Deriv X',
-    binary: 'Binary',
-} as const;
-
-const landing_company_display_shortcodes = {
-    svg: 'SVG',
-    malta: 'Malta',
-} as const;
 
 const useWalletTransactions = (
     action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer',
@@ -76,19 +64,6 @@ const useWalletTransactions = (
     useEffect(() => {
         if (is_fetching) setTimeout(() => setIsFetching(false), 1000);
     }, [is_fetching]);
-
-    const getTradingAccountName = useCallback(
-        (
-            account_type: 'standard' | 'mt5' | 'dxtrade' | 'binary',
-            is_virtual: boolean,
-            landing_company_shortcode: 'svg' | 'malta'
-        ) => {
-            return `${trading_accounts_display_prefixes[account_type]} ${
-                is_virtual ? 'Demo' : `(${landing_company_display_shortcodes[landing_company_shortcode]})`
-            } account`;
-        },
-        []
-    );
 
     const modified_transactions = useMemo(
         () =>
@@ -172,7 +147,7 @@ const useWalletTransactions = (
                       })
                       .filter(<T>(value: T | null): value is T => value !== null)
                 : [],
-        [accounts, current_wallet, getConfig, getTradingAccountName, is_dark_mode_on, loginid, transactions, wallets]
+        [accounts, current_wallet, getConfig, is_dark_mode_on, loginid, transactions, wallets]
     );
 
     return {
