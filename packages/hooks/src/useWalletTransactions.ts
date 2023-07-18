@@ -69,7 +69,7 @@ const useWalletTransactions = (
         () =>
             wallets && current_wallet
                 ? transactions
-                      // Filter out transactions with missing data.
+                      // Filter out transactions with undefined `action_type`, `amount`, or `balance_after`.
                       .filter(
                           (
                               transaction: typeof transactions[number]
