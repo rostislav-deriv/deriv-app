@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '@deriv/stores';
-import { getTradingAccountName, getWalletCurrencyIcon } from '@deriv/utils';
+import { getWalletCurrencyIcon } from '@deriv/utils';
 import { useFetch } from '@deriv/api';
 import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
@@ -96,23 +96,11 @@ const useWalletTransactions = (
                               if (!other_loginid) return null;
                               const other_account = accounts.find(el => el?.loginid === other_loginid);
                               if (!other_account || !other_account.currency || !other_account.account_type) return null;
-                              const other_wallet = wallets.find(
-                                  el => el.loginid === other_account.loginid
-                              ) as typeof wallets[number];
                               return {
+                                  ...other_account,
                                   ...transaction,
-                                  account_category: other_account.account_category,
                                   account_currency: other_account.currency,
-                                  account_name:
-                                      other_account.account_category === 'wallet'
-                                          ? `${other_wallet.is_virtual ? 'Demo ' : ''}${other_wallet.currency} Wallet`
-                                          : getTradingAccountName(
-                                                other_account.account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
-                                                !!other_account.is_virtual,
-                                                other_account.landing_company_shortcode
-                                            ),
-                                  account_type: other_account.account_type,
-                                  gradient_class: `wallet-card__${
+                                  gradient_card_class: `wallet-card__${
                                       other_account.is_virtual === 1 ? 'demo' : other_account?.currency?.toLowerCase()
                                   }-bg${is_dark_mode_on ? '--dark' : ''}`,
                                   icon: getWalletCurrencyIcon(
@@ -124,23 +112,19 @@ const useWalletTransactions = (
                                       getConfig(other_account.currency)?.is_crypto || current_wallet.is_virtual
                                           ? 'crypto'
                                           : 'fiat',
+                                  landing_company_shortcode: other_account.landing_company_shortcode,
                               };
                           }
 
                           return {
+                              ...current_wallet,
                               ...transaction,
-                              account_category: 'wallet',
                               account_currency: current_wallet.currency,
-                              account_name: `${current_wallet.is_virtual ? 'Demo ' : ''}${
-                                  current_wallet.currency
-                              } Wallet`,
-                              account_type: current_wallet.account_type,
-                              gradient_class: current_wallet.gradient_card_class,
-                              icon: current_wallet.icon,
                               icon_type:
                                   current_wallet.currency_config?.is_crypto || current_wallet.is_virtual
                                       ? 'crypto'
                                       : 'fiat',
+                              landing_company_shortcode: undefined,
                           };
                       })
                       .filter(<T>(value: T | null): value is T => value !== null)
