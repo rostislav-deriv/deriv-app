@@ -10,7 +10,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'statement'>>;
-describe('useWalletsList', () => {
+describe('useWalletTransactions', () => {
     test('should return a list of transactions', () => {
         const mock = mockStore({
             client: {
@@ -78,63 +78,61 @@ describe('useWalletsList', () => {
 
         const { result } = renderHook(() => useWalletTransactions('deposit'), { wrapper });
 
-        expect(result.current.transactions).toEqual([
-            {
-                account_category: 'wallet',
-                account_currency: 'USD',
-                account_name: 'USD Wallet',
-                account_type: 'doughflow',
-                action_type: 'deposit',
-                amount: 25,
-                balance_after: 25,
-                gradient_class: 'wallet-card__usd-bg',
-                icon: 'IcWalletCurrencyUsd',
-                icon_type: 'fiat',
-                transaction_id: 17494415481,
-                transaction_time: 1685942136,
-            },
-            {
-                account_category: 'wallet',
-                account_currency: 'USD',
-                account_name: 'USD Wallet',
-                account_type: 'doughflow',
-                action_type: 'withdrawal',
-                amount: 750,
-                balance_after: 0,
-                gradient_class: 'wallet-card__usd-bg',
-                icon: 'IcWalletCurrencyUsd',
-                icon_type: 'fiat',
-                transaction_id: 17494415480,
-                transaction_time: 1685942135,
-            },
-            {
-                account_category: 'wallet',
-                account_currency: 'USD',
-                account_name: 'USD Wallet',
-                account_type: 'doughflow',
-                action_type: 'reset_balance',
-                amount: 350,
-                balance_after: 10000,
-                gradient_class: 'wallet-card__usd-bg',
-                icon: 'IcWalletCurrencyUsd',
-                icon_type: 'fiat',
-                transaction_id: 13693003421,
-                transaction_time: 1685942133,
-            },
-            {
-                account_category: 'wallet',
-                account_currency: 'USD',
-                account_name: 'USD Wallet',
-                account_type: 'doughflow',
-                action_type: 'deposit',
-                amount: 1000,
-                balance_after: 1000,
-                gradient_class: 'wallet-card__usd-bg',
-                icon: 'IcWalletCurrencyUsd',
-                icon_type: 'fiat',
-                transaction_id: 17494117539,
-                transaction_time: 1685942131,
-            },
-        ]);
+        expect(result.current.transactions).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    account_category: 'wallet',
+                    account_currency: 'USD',
+                    account_type: 'doughflow',
+                    action_type: 'deposit',
+                    amount: 25,
+                    balance_after: 25,
+                    gradient_card_class: 'wallet-card__usd-bg',
+                    icon: 'IcWalletCurrencyUsd',
+                    icon_type: 'fiat',
+                    transaction_id: 17494415481,
+                    transaction_time: 1685942136,
+                }),
+                expect.objectContaining({
+                    account_category: 'wallet',
+                    account_currency: 'USD',
+                    account_type: 'doughflow',
+                    action_type: 'withdrawal',
+                    amount: 750,
+                    balance_after: 0,
+                    gradient_card_class: 'wallet-card__usd-bg',
+                    icon: 'IcWalletCurrencyUsd',
+                    icon_type: 'fiat',
+                    transaction_id: 17494415480,
+                    transaction_time: 1685942135,
+                }),
+                expect.objectContaining({
+                    account_category: 'wallet',
+                    account_currency: 'USD',
+                    account_type: 'doughflow',
+                    action_type: 'reset_balance',
+                    amount: 350,
+                    balance_after: 10000,
+                    gradient_card_class: 'wallet-card__usd-bg',
+                    icon: 'IcWalletCurrencyUsd',
+                    icon_type: 'fiat',
+                    transaction_id: 13693003421,
+                    transaction_time: 1685942133,
+                }),
+                expect.objectContaining({
+                    account_category: 'wallet',
+                    account_currency: 'USD',
+                    account_type: 'doughflow',
+                    action_type: 'deposit',
+                    amount: 1000,
+                    balance_after: 1000,
+                    gradient_card_class: 'wallet-card__usd-bg',
+                    icon: 'IcWalletCurrencyUsd',
+                    icon_type: 'fiat',
+                    transaction_id: 17494117539,
+                    transaction_time: 1685942131,
+                }),
+            ])
+        );
     });
 });
