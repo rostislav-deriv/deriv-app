@@ -10,6 +10,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'statement'>>;
+
 describe('useWalletTransactions', () => {
     test('should return a list of transactions', () => {
         const mock = mockStore({
