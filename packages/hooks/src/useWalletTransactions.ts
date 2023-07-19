@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
-import { useFetch } from '@deriv/api';
 import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
 import useWalletsList from './useWalletsList';
 import useActiveWallet from './useActiveWallet';
+import usePaginatedWalletTransactions from './usePaginatedWalletTransactions';
 
 const useWalletTransactions = (
     action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer',
@@ -26,35 +26,7 @@ const useWalletTransactions = (
         [demo_platform_account, real_platform_accounts]
     );
 
-    const [is_complete_list, setIsCompleteList] = useState(false);
-    const [transactions, setTransactions] = useState<
-        Required<Required<NonNullable<typeof data>>['statement']>['transactions']
-    >([]);
-
-    const transactions_per_page = 10;
-
-    const { data, isLoading, isSuccess } = useFetch('statement', {
-        options: { keepPreviousData: true },
-        payload: {
-            // @ts-expect-error reset_balance is not supported in the API yet
-            action_type: action_type || undefined,
-            limit: page_count ? transactions_per_page : undefined,
-            offset: page_count ? transactions_per_page * (page_count - 1) : 0,
-        },
-    });
-
-    useEffect(() => setTransactions([]), [action_type]);
-
-    useEffect(() => {
-        if (data?.statement?.count !== 0) setIsCompleteList(false);
-    }, [data?.statement]);
-
-    useEffect(() => {
-        if (is_complete_list || isLoading || !isSuccess) return;
-        if (data?.statement?.count === 0) setIsCompleteList(true);
-        const new_transactions = data?.statement?.transactions;
-        if (new_transactions) setTransactions((prev: typeof transactions) => [...prev, ...new_transactions]);
-    }, [is_complete_list, data?.statement, isLoading, isSuccess]);
+    const { transactions, isComplete, isLoading, isSuccess } = usePaginatedWalletTransactions(action_type, page_count);
 
     const modified_transactions = useMemo(
         () =>
@@ -127,7 +99,7 @@ const useWalletTransactions = (
         transactions: modified_transactions,
         isLoading,
         isSuccess,
-        isComplete: is_complete_list,
+        isComplete,
     };
 };
 
