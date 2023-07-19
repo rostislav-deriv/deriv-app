@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useFetch } from '@deriv/api';
 
+/** A custom hook to get a paginated list of transactions for an active wallet of a user, filtered by action type */
 const usePaginatedWalletTransactions = (
-    action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer',
+    action_type?: 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer',
     page_count?: number
 ) => {
     const [is_complete_list, setIsCompleteList] = useState(false);
