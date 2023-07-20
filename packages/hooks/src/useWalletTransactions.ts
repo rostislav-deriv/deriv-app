@@ -1,16 +1,15 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
+import { usePaginatedFetch } from '@deriv/api';
 import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
 import useWalletsList from './useWalletsList';
 import useActiveWallet from './useActiveWallet';
-import usePaginatedWalletTransactions from './usePaginatedWalletTransactions';
 
 /** A custom hook to get a list of transactions for an active wallet of a user, optionally filtered by transaction type */
 const useWalletTransactions = (
-    action_type?: 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer',
-    page_count?: number
+    action_type?: 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer'
 ) => {
     const {
         client: { loginid },
@@ -29,7 +28,33 @@ const useWalletTransactions = (
     );
 
     // Get the paginated and filtered list of transactions from the API.
-    const { transactions, ...rest } = usePaginatedWalletTransactions(action_type, page_count);
+    const { data, ...rest } = usePaginatedFetch('statement', action_type || '', {
+        payload: {
+            // @ts-expect-error reset_balance is not supported in the API yet
+            action_type: action_type || undefined,
+        },
+    });
+
+    // Maintain a list of transactions.
+    const [transactions, setTransactions] = useState<
+        Required<Required<NonNullable<typeof data>>['statement']>['transactions']
+    >([]);
+
+    // Maintain a flag to indicate if the list of transactions is complete.
+    const [is_transactions_complete, setIsTransactionsComplete] = useState(false);
+
+    // Reset the list of transactions when the transaction type changes.
+    useEffect(() => {
+        setIsTransactionsComplete(false);
+        setTransactions([]);
+    }, [action_type]);
+
+    // Add new transactions to the list of transactions when `usePaginatedFetch` returns new ones.
+    useEffect(() => {
+        const new_transactions = data?.statement?.transactions;
+        if (new_transactions) setTransactions(prev => [...prev, ...(new_transactions || [])]);
+        if (new_transactions?.length === 0) setIsTransactionsComplete(true);
+    }, [data?.statement?.transactions]);
 
     // Add additional information to each transaction.
     const modified_transactions = useMemo(
@@ -108,6 +133,8 @@ const useWalletTransactions = (
     return {
         /** List of transactions of the active wallet of the current user. */
         transactions: modified_transactions,
+        /** Indicating whether this list in question is complete. */
+        isComplete: is_transactions_complete,
         ...rest,
     };
 };
