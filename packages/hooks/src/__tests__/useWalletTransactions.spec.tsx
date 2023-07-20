@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
+import { APIProvider, useFetch, usePaginatedFetch } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useWalletTransactions from '../useWalletTransactions';
@@ -7,9 +7,11 @@ import useWalletTransactions from '../useWalletTransactions';
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn(),
+    usePaginatedFetch: jest.fn(),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'statement'>>;
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
+const mockUsePaginatedFetch = usePaginatedFetch as jest.MockedFunction<typeof usePaginatedFetch<'statement'>>;
 
 describe('useWalletTransactions', () => {
     test('should return a list of transactions', () => {
@@ -34,6 +36,13 @@ describe('useWalletTransactions', () => {
                         },
                     ],
                 },
+            },
+            isLoading: false,
+            isSuccess: true,
+        } as unknown as ReturnType<typeof mockUseFetch>);
+
+        mockUsePaginatedFetch.mockReturnValue({
+            data: {
                 statement: {
                     transactions: [
                         {
@@ -69,7 +78,7 @@ describe('useWalletTransactions', () => {
             },
             isLoading: false,
             isSuccess: true,
-        } as unknown as ReturnType<typeof mockUseFetch>);
+        } as unknown as ReturnType<typeof mockUsePaginatedFetch>);
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -77,7 +86,7 @@ describe('useWalletTransactions', () => {
             </APIProvider>
         );
 
-        const { result } = renderHook(() => useWalletTransactions('deposit'), { wrapper });
+        const { result } = renderHook(() => useWalletTransactions(), { wrapper });
 
         expect(result.current.transactions).toEqual(
             expect.arrayContaining([
