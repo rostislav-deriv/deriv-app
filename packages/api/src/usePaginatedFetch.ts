@@ -23,7 +23,7 @@ const usePaginatedFetch = <T extends TSocketEndpointNames>(
 
     const nextPage = () => setOffset(prev => prev + limit);
 
-    // @ts-expect-error aaa
+    // @ts-expect-error we can't we sure that the request has payload/offset/limit.
     const fetcher = useFetch(name, {
         payload: {
             ...payload,
