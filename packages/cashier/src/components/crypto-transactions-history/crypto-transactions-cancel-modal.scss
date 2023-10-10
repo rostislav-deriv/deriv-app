@@ -6,6 +6,12 @@
     }
 }
 
+.dc-modal-body {
+    @include mobile {
+        padding: 1.6rem;
+    }
+}
+
 .dc-modal-footer {
     padding: 0 2.4rem 2.4rem;
 
