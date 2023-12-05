@@ -19,7 +19,22 @@ const useTransferMessages = (
     const { preferred_language: preferredLanguage } = authorizeData;
     const { data: poi } = usePOI();
     const { data: accountLimits } = useAccountLimits();
-    const { data: exchangeRatesRaw, subscribe, unsubscribe } = useExchangeRate();
+
+    const {
+        data: USDToSourceCurrencyRate,
+        subscribe: subscribeUSDSourceCurrency,
+        unsubscribe: unsubscribeUSDSourceCurrency,
+    } = useExchangeRate();
+    const {
+        data: USDToTargetCurrencyRate,
+        subscribe: subscribeUSDTargetCurrency,
+        unsubscribe: unsubscribeUSDTargetCurrency,
+    } = useExchangeRate();
+    const {
+        data: SourceToTargetCurrenciesRate,
+        subscribe: subscribeSourceTargetCurrencies,
+        unsubscribe: unsubscribeSourceTargetCurrencies,
+    } = useExchangeRate();
 
     const [exchangeRates, setExchangeRates] = useState<THooks.ExchangeRate>();
 
@@ -28,34 +43,59 @@ const useTransferMessages = (
     const isAccountVerified = poi?.is_verified;
 
     useEffect(
-        () => setExchangeRates(prev => ({ ...prev, rates: { ...prev?.rates, ...exchangeRatesRaw?.rates } })),
-        [exchangeRatesRaw?.rates]
+        () =>
+            setExchangeRates(prev => ({
+                ...prev,
+                rates: { ...prev?.rates, ...USDToSourceCurrencyRate?.rates },
+            })),
+        [USDToSourceCurrencyRate?.rates]
+    );
+
+    useEffect(
+        () =>
+            setExchangeRates(prev => ({
+                ...prev,
+                rates: { ...prev?.rates, ...USDToTargetCurrencyRate?.rates },
+            })),
+        [USDToTargetCurrencyRate?.rates]
+    );
+
+    useEffect(
+        () =>
+            setExchangeRates(prev => ({
+                ...prev,
+                rates: { ...prev?.rates, ...SourceToTargetCurrenciesRate?.rates },
+            })),
+        [SourceToTargetCurrenciesRate?.rates]
     );
 
     useEffect(() => {
         if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.currency || !activeWallet?.loginid) return;
-        unsubscribe();
         if (!isAccountVerified && isTransferBetweenWallets) {
-            subscribe({
+            subscribeSourceTargetCurrencies({
                 base_currency: activeWallet.currency,
                 loginid: activeWallet.loginid,
                 target_currency:
                     activeWallet.loginid === fromAccount.loginid ? toAccount.currency : fromAccount.currency,
             });
         } else {
-            subscribe({
+            subscribeUSDTargetCurrency({
                 base_currency: 'USD',
                 loginid: activeWallet.loginid,
                 target_currency: toAccount.currency,
             });
             if (fromAccount.currency !== toAccount.currency)
-                subscribe({
+                subscribeUSDSourceCurrency({
                     base_currency: 'USD',
                     loginid: activeWallet.loginid,
                     target_currency: fromAccount.currency,
                 });
-            return unsubscribe;
         }
+        return () => {
+            unsubscribeUSDSourceCurrency();
+            unsubscribeUSDTargetCurrency();
+            unsubscribeSourceTargetCurrencies();
+        };
     }, [
         activeWallet?.currency,
         activeWallet?.loginid,
@@ -63,9 +103,13 @@ const useTransferMessages = (
         fromAccount?.loginid,
         isAccountVerified,
         isTransferBetweenWallets,
-        subscribe,
+        subscribeSourceTargetCurrencies,
+        subscribeUSDTargetCurrency,
+        subscribeUSDSourceCurrency,
         toAccount?.currency,
-        unsubscribe,
+        unsubscribeUSDSourceCurrency,
+        unsubscribeUSDTargetCurrency,
+        unsubscribeSourceTargetCurrencies,
     ]);
 
     const displayMoney = useCallback(
